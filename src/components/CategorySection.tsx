@@ -18,7 +18,7 @@ export default function CategorySection() {
         >
           <div className="max-w-2xl">
             <p className="eyebrow">Pilih Berdasarkan Kategori</p>
-            <h2 className="mt-3 font-serif text-section text-forest text-balance">
+            <h2 className="mt-3 font-serif text-section text-clay text-balance">
               Temukan Kenyamanan Anda
             </h2>
           </div>
@@ -44,7 +44,7 @@ export default function CategorySection() {
                         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-forest/70 via-forest/10 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-clay/50 via-clay/5 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
                       <h3 className="font-serif text-xl text-ivory md:text-2xl">{cat.name}</h3>
                       <p className="mt-1 text-sm text-ivory/80">{cat.description}</p>

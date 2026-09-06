@@ -20,7 +20,7 @@ export default function ProductDetailPage() {
     return (
       <section className="flex min-h-[60vh] items-center justify-center bg-ivory pt-20">
         <div className="text-center">
-          <h1 className="font-serif text-3xl text-forest">Produk tidak ditemukan</h1>
+          <h1 className="font-serif text-3xl text-clay">Produk tidak ditemukan</h1>
           <p className="mt-3 text-charcoal-muted">Produk yang Anda cari tidak tersedia.</p>
           <Link to="/products" className="btn-primary mt-6">
             Kembali ke Produk
@@ -71,7 +71,7 @@ export default function ProductDetailPage() {
                       onClick={() => setActiveImage(i)}
                       className={`overflow-hidden rounded-xl transition-all duration-300 ${
                         activeImage === i
-                          ? 'ring-2 ring-forest ring-offset-2 ring-offset-ivory'
+                          ? 'ring-2 ring-maroon ring-offset-2 ring-offset-ivory'
                           : 'opacity-70 hover:opacity-100'
                       }`}
                       aria-label={`Lihat gambar ${i + 1}`}
@@ -90,13 +90,13 @@ export default function ProductDetailPage() {
             {/* Info */}
             <div className="lg:pt-4">
               <span className="eyebrow">{product.category}</span>
-              <h1 className="mt-3 font-serif text-display text-forest text-balance">
+              <h1 className="mt-3 font-serif text-display text-clay text-balance">
                 {product.name}
               </h1>
               <div className="mt-4">
                 <Rating rating={product.rating} reviewCount={product.reviewCount} size="md" />
               </div>
-              <p className="mt-6 text-2xl font-medium text-forest md:text-3xl">
+                <p className="mt-6 text-2xl font-medium text-clay md:text-3xl">
                 {formatIDR(product.price)}
               </p>
               <p className="mt-5 text-base leading-relaxed text-charcoal-muted">
@@ -118,7 +118,7 @@ export default function ProductDetailPage() {
 
               {/* WhatsApp CTA */}
               <div className="mt-8 rounded-2xl border border-sand-dark/40 bg-sand/30 p-6 md:p-7">
-                <p className="font-serif text-lg text-forest">Tertarik dengan produk ini?</p>
+                <p className="font-serif text-lg text-clay">Tertarik dengan produk ini?</p>
                 <p className="mt-1.5 text-sm text-charcoal-muted">
                   Chat dengan kami melalui WhatsApp untuk informasi lebih lanjut.
                 </p>
@@ -135,10 +135,10 @@ export default function ProductDetailPage() {
 
               <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-charcoal-muted">
                 <span className="inline-flex items-center gap-1.5">
-                  <Check className="h-4 w-4 text-sage" /> Tanpa pembayaran online
+                  <Check className="h-4 w-4 text-terracotta" /> Tanpa pembayaran online
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <Check className="h-4 w-4 text-sage" /> Bantuan personal
+                  <Check className="h-4 w-4 text-terracotta" /> Bantuan personal
                 </span>
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function ProductDetailPage() {
         <section className="bg-sand/40 py-20 md:py-28">
           <div className="container-wide">
             <div className="flex items-end justify-between">
-              <h2 className="font-serif text-section text-forest">Anda Mungkin Juga Suka</h2>
+              <h2 className="font-serif text-section text-clay">Anda Mungkin Juga Suka</h2>
               <Link to="/products" className="link-arrow hidden sm:inline-flex">
                 Lihat Semua <ArrowRight className="h-4 w-4" />
               </Link>

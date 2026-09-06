@@ -22,12 +22,12 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
             {item.to && !isLast ? (
               <Link
                 to={item.to}
-                className="text-charcoal-muted transition-colors hover:text-forest"
+                className="text-charcoal-muted transition-colors hover:text-clay"
               >
                 {item.label}
               </Link>
             ) : (
-              <span className={isLast ? 'font-medium text-forest' : 'text-charcoal-muted'}>
+              <span className={isLast ? 'font-medium text-clay' : 'text-charcoal-muted'}>
                 {item.label}
               </span>
             )}

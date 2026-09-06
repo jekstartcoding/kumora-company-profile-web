@@ -10,15 +10,14 @@
   }
 
   body {
-    background-color: #f7f3ec;
-    color: #252525;
+    background-color: #eee4e1;
     font-family: 'Inter', system-ui, sans-serif;
     line-height: 1.6;
   }
 
   ::selection {
-    background-color: #18352f;
-    color: #f7f3ec;
+    background-color: #7f4744;
+    color: #eee4e1;
   }
 
   ::-webkit-scrollbar {
@@ -26,30 +25,30 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #f7f3ec;
+    background: #eee4e1;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #c7d3ce;
+    background: #e6beae;
     border-radius: 5px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #9fb0a9;
+    background: #b2967d;
   }
 }
 
 @layer components {
   .eyebrow {
-    @apply text-xs font-medium uppercase tracking-[0.2em] text-sage;
+    @apply text-xs font-medium uppercase tracking-[0.2em] text-terracotta;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-forest px-7 py-3.5 text-sm font-medium text-ivory transition-all duration-300 hover:bg-forest-700 hover:shadow-lg;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-clay px-7 py-3.5 text-sm font-medium text-ivory transition-all duration-300 hover:bg-clay-700 hover:shadow-lg;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-forest/20 bg-transparent px-7 py-3.5 text-sm font-medium text-forest transition-all duration-300 hover:border-forest hover:bg-forest hover:text-ivory;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-clay/20 bg-transparent px-7 py-3.5 text-sm font-medium text-clay transition-all duration-300 hover:border-clay hover:bg-clay hover:text-ivory;
   }
 
   .btn-whatsapp {
@@ -61,7 +60,7 @@
   }
 
   .link-arrow {
-    @apply inline-flex items-center gap-1.5 text-sm font-medium text-forest transition-all duration-300 hover:gap-2.5;
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-clay transition-all duration-300 hover:gap-2.5;
   }
 }
 

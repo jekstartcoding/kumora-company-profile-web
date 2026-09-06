@@ -113,13 +113,13 @@ export default function ProductsPage() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Cari produk..."
-                  className="w-full rounded-full border border-sand-dark/50 bg-ivory py-3 pl-11 pr-4 text-sm text-charcoal placeholder:text-charcoal-muted/60 focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest"
+                  className="w-full rounded-full border border-sand-dark/50 bg-ivory py-3 pl-11 pr-4 text-sm text-charcoal placeholder:text-charcoal-muted/60 focus:border-maroon focus:outline-none focus:ring-1 focus:ring-maroon"
                 />
               </div>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setFiltersOpen((v) => !v)}
-                  className="inline-flex items-center gap-2 rounded-full border border-sand-dark/50 px-5 py-3 text-sm font-medium text-charcoal transition-colors hover:border-forest hover:text-forest lg:hidden"
+                  className="inline-flex items-center gap-2 rounded-full border border-sand-dark/50 px-5 py-3 text-sm font-medium text-charcoal transition-colors hover:border-clay hover:text-clay lg:hidden"
                 >
                   <SlidersHorizontal className="h-4 w-4" />
                   Filter
@@ -128,7 +128,7 @@ export default function ProductsPage() {
                   <select
                     value={sort}
                     onChange={(e) => setSort(e.target.value as SortOption)}
-                    className="appearance-none rounded-full border border-sand-dark/50 bg-ivory py-3 pl-5 pr-10 text-sm font-medium text-charcoal focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest"
+                    className="appearance-none rounded-full border border-sand-dark/50 bg-ivory py-3 pl-5 pr-10 text-sm font-medium text-charcoal focus:border-maroon focus:outline-none focus:ring-1 focus:ring-maroon"
                   >
                     {sortOptions.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -151,8 +151,8 @@ export default function ProductsPage() {
                   onClick={() => handleCategoryChange(cat)}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 ${
                     category === cat
-                      ? 'bg-forest text-ivory'
-                      : 'border border-sand-dark/40 text-charcoal-light hover:border-forest hover:text-forest'
+                      ? 'bg-clay text-ivory'
+                      : 'border border-sand-dark/40 text-charcoal-light hover:border-clay hover:text-clay'
                   }`}
                 >
                   {cat}
@@ -169,8 +169,8 @@ export default function ProductsPage() {
                     onClick={() => handleCategoryChange(cat)}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 ${
                       category === cat
-                        ? 'bg-forest text-ivory'
-                        : 'border border-sand-dark/40 text-charcoal-light hover:border-forest hover:text-forest'
+                        ? 'bg-clay text-ivory'
+                        : 'border border-sand-dark/40 text-charcoal-light hover:border-clay hover:text-clay'
                     }`}
                   >
                     {cat}
@@ -188,7 +188,7 @@ export default function ProductsPage() {
             {hasActiveFilters && (
               <button
                 onClick={handleReset}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-forest transition-colors hover:text-sage"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-clay transition-colors hover:text-terracotta"
               >
                 <X className="h-3.5 w-3.5" />
                 Reset Filter
@@ -202,8 +202,7 @@ export default function ProductsPage() {
               className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4"
               variants={staggerContainer(0.06)}
               initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: '-120px' }}
+              animate="show"
             >
               {filtered.map((product, i) => (
                 <ProductCard key={product.id} product={product} index={i} />
@@ -211,7 +210,7 @@ export default function ProductsPage() {
             </motion.div>
           ) : (
             <div className="mt-16 flex flex-col items-center justify-center rounded-2xl border border-sand-dark/40 bg-sand/30 px-6 py-16 text-center">
-              <h3 className="font-serif text-2xl text-forest">Produk tidak ditemukan</h3>
+              <h3 className="font-serif text-2xl text-clay">Produk tidak ditemukan</h3>
               <p className="mt-3 max-w-sm text-sm text-charcoal-muted">
                 Coba cari produk lain atau reset filter.
               </p>

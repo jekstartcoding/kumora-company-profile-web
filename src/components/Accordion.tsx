@@ -20,13 +20,13 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
           <motion.div key={i} variants={shouldReduce ? undefined : cardVariants}>
             <button
               onClick={() => setOpenIndex(isOpen ? null : i)}
-              className="flex w-full items-center justify-between gap-4 py-5 text-left transition-colors hover:text-forest md:py-6"
+              className="flex w-full items-center justify-between gap-4 py-5 text-left transition-colors hover:text-clay md:py-6"
               aria-expanded={isOpen}
             >
-              <span className="font-serif text-lg text-forest md:text-xl">
+              <span className="font-serif text-lg text-clay md:text-xl">
                 {item.question}
               </span>
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-sand-dark text-forest transition-colors">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-sand-dark text-clay transition-colors">
                 {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
               </span>
             </button>

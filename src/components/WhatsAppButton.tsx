@@ -18,7 +18,7 @@ export default function WhatsAppButton() {
       animate="show"
     >
       <MessageCircle className="h-6 w-6" />
-      <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-full bg-forest px-4 py-2 text-xs font-medium text-ivory opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block">
+      <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-full bg-clay px-4 py-2 text-xs font-medium text-ivory opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block">
         Hubungi kami
       </span>
     </motion.a>

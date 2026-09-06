@@ -93,7 +93,7 @@ function AboutSection() {
         <motion.div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16" variants={cardVariants}>
           <div className="order-2 lg:order-1">
             <p className="eyebrow">Tentang Kumora</p>
-            <h2 className="mt-3 font-serif text-display text-forest text-balance">
+            <h2 className="mt-3 font-serif text-display text-clay text-balance">
               Kenyamanan Berawal dari Cara Anda Beristirahat.
             </h2>
             <div className="mt-6 space-y-4 text-base leading-relaxed text-charcoal-muted">
@@ -147,10 +147,10 @@ function WhySection() {
         <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-sand-dark/40 bg-sand-dark/40 sm:grid-cols-2 lg:grid-cols-4">
           {principles.map((p, i) => (
             <div key={i} className="bg-ivory p-7 md:p-8">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-forest/8 text-forest">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-clay/8 text-clay">
                 <p.icon className="h-5 w-5" strokeWidth={1.5} />
               </div>
-              <h3 className="mt-5 font-serif text-lg text-forest">{p.title}</h3>
+              <h3 className="mt-5 font-serif text-lg text-clay">{p.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-charcoal-muted">{p.description}</p>
             </div>
           ))}
@@ -176,7 +176,7 @@ function StatementSection() {
           loading="lazy"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-forest/60" />
+        <div className="absolute inset-0 bg-clay/50" />
       </div>
       <div className="container-wide relative py-24 md:py-36">
         <motion.div className="mx-auto max-w-3xl text-center" variants={cardVariants}>
@@ -193,7 +193,7 @@ function StatementSection() {
 function FinalCTA() {
   return (
     <motion.section
-      className="bg-forest py-20 md:py-28"
+      className="bg-clay py-20 md:py-28"
       variants={staggerContainer(0.06)}
       initial="hidden"
       whileInView="show"
@@ -211,7 +211,7 @@ function FinalCTA() {
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/products"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-forest transition-all duration-300 hover:bg-gold hover:text-forest"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-clay transition-all duration-300 hover:bg-gold hover:text-clay"
             >
               Lihat Produk
               <ArrowRight className="h-4 w-4" />

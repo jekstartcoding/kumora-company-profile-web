@@ -19,11 +19,11 @@ export default function HeroSection() {
           className="h-full w-full object-cover"
           {...{ fetchpriority: 'high' }}
         />
-        {/* Darken overlay to improve text visibility (fading from bottom to top) */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+        {/* Warm clay overlay preserves image detail while improving text visibility. */}
+        <div className="absolute inset-0 bg-gradient-to-t from-clay/55 via-clay/25 to-transparent" />
       </div>
 
-      <motion.div className="container-wide relative flex min-h-[100svh] flex-col justify-end pb-20 pt-32 md:pb-28 md:pt-40" variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
+      <motion.div className="container-wide relative flex min-h-[100svh] flex-col justify-end pb-20 pt-32 md:pb-28 md:pt-40" variants={staggerContainer(0.08)} initial="hidden" animate="show">
         <div className="max-w-2xl">
           <motion.p className="eyebrow text-ivory/80" variants={shouldReduce ? undefined : cardVariants}>
             Seni Istirahat yang Lebih Baik

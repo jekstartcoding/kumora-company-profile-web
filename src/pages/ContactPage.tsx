@@ -49,11 +49,11 @@ function MapPlaceholder() {
         <div className="absolute left-2/3 top-0 h-full w-2 bg-sand-dark/20" />
         {/* Pin */}
         <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-full flex-col items-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-forest text-ivory shadow-lg">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-clay text-ivory shadow-lg">
             <MapPin className="h-5 w-5" />
           </div>
           <div className="mt-3 rounded-lg bg-ivory/95 px-4 py-2 text-center shadow-md backdrop-blur-sm">
-            <p className="font-serif text-sm text-forest">Ruang Pamer Kumora</p>
+              <p className="font-serif text-sm text-clay">Ruang Pamer Kumora</p>
             <p className="text-xs text-charcoal-muted">Bandung, Jawa Barat</p>
           </div>
         </div>
@@ -82,11 +82,11 @@ export default function ContactPage() {
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
             {/* Contact info */}
             <motion.div variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
-              <h2 className="font-serif text-section text-forest">Informasi Kontak</h2>
+              <h2 className="font-serif text-section text-clay">Informasi Kontak</h2>
               <motion.div className="mt-8 space-y-6" variants={staggerContainer(0.06)}>
                 {contactInfo.map((info, i) => (
                   <motion.div key={i} className="flex items-start gap-4" variants={shouldReduce ? undefined : cardVariants}>
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-forest/8 text-forest">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-clay/8 text-clay">
                       <info.icon className="h-5 w-5" strokeWidth={1.5} />
                     </div>
                     <div>
@@ -96,7 +96,7 @@ export default function ContactPage() {
                           href={info.href}
                           target={info.external ? '_blank' : undefined}
                           rel={info.external ? 'noopener noreferrer' : undefined}
-                          className="mt-1 block whitespace-pre-line text-base text-charcoal transition-colors hover:text-forest"
+                          className="mt-1 block whitespace-pre-line text-base text-charcoal transition-colors hover:text-clay"
                         >
                           {info.value}
                         </a>
@@ -124,7 +124,7 @@ export default function ContactPage() {
                       href="#"
                       onClick={(e) => e.preventDefault()}
                       aria-label={social.label}
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-sand-dark/40 text-charcoal-light transition-all duration-300 hover:border-forest hover:bg-forest hover:text-ivory"
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-sand-dark/40 text-charcoal-light transition-all duration-300 hover:border-clay hover:bg-clay hover:text-ivory"
                     >
                       <social.icon className="h-5 w-5" strokeWidth={1.5} />
                     </a>
@@ -135,7 +135,7 @@ export default function ContactPage() {
 
             {/* WhatsApp CTA + Map */}
             <motion.div variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
-              <motion.div className="rounded-3xl bg-forest p-8 text-center md:p-10" variants={shouldReduce ? undefined : cardVariants}>
+              <motion.div className="rounded-3xl bg-clay p-8 text-center md:p-10" variants={shouldReduce ? undefined : cardVariants}>
                 <h3 className="font-serif text-2xl text-ivory">Chat dengan kami melalui WhatsApp</h3>
                 <p className="mt-3 text-sm text-ivory/70">
                   Cara tercepat untuk menghubungi tim kami. Kami siap membantu Anda menemukan produk yang tepat.

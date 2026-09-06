@@ -21,11 +21,13 @@ const companyLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-forest text-ivory">
+    <footer className="bg-clay text-ivory">
       <div className="container-wide py-16 md:py-20">
         <motion.div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-8" variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}>
           <motion.div className="lg:col-span-1" variants={cardVariants}>
-            <h2 className="font-serif text-2xl tracking-wide">KUMORA</h2>
+            <div className="inline-flex rounded-full bg-ivory px-4 py-2">
+              <img src="/kumora-logo-with-text.png" alt="Kumora" className="h-7 w-auto object-contain" />
+            </div>
             <p className="mt-3 text-sm text-ivory/70">Kenyamanan untuk hidup yang lebih baik.</p>
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-ivory/60">
               Perlengkapan tidur dan kamar yang dirancang dengan penuh perhatian untuk kenyamanan setiap hari.

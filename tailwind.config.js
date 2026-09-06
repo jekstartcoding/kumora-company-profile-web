@@ -4,32 +4,30 @@ export default {
   theme: {
     extend: {
       colors: {
-        forest: {
-          DEFAULT: '#18352F',
-          50: '#E8EDEB',
-          100: '#C7D3CE',
-          200: '#9FB0A9',
-          300: '#71877D',
-          400: '#4A6157',
-          500: '#2E4A40',
-          600: '#18352F',
-          700: '#132823',
-          800: '#0E1D19',
-          900: '#0A1512',
+        // Clay is the primary working color; maroon is reserved for small brand accents.
+        clay: {
+          DEFAULT: '#7F4744',
+          700: '#63302D',
+          800: '#482220',
+          900: '#301613',
         },
-        sage: {
-          DEFAULT: '#71877D',
-          light: '#A3B5A8',
-          dark: '#5A6E62',
+        maroon: {
+          DEFAULT: '#9F1B32',
+          light: '#C23B54',
+        },
+        terracotta: {
+          DEFAULT: '#C98D76',
+          light: '#E6BEAE',
+          dark: '#B2967D',
         },
         ivory: {
-          DEFAULT: '#F7F3EC',
-          dark: '#EFE9DD',
+          DEFAULT: '#EEE4E1',
+          dark: '#E7D8C9',
         },
         sand: {
-          DEFAULT: '#E9DFD0',
-          light: '#F0E8DA',
-          dark: '#D9CDB7',
+          DEFAULT: '#E7D8C9',
+          light: '#F3EAE0',
+          dark: '#E6BEAE',
         },
         charcoal: {
           DEFAULT: '#252525',

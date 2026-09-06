@@ -23,7 +23,7 @@ export default function FAQPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-2xl rounded-2xl border border-sand-dark/40 bg-sand/30 p-8 text-center md:p-10">
-            <h2 className="font-serif text-2xl text-forest">Masih memiliki pertanyaan?</h2>
+            <h2 className="font-serif text-2xl text-clay">Masih memiliki pertanyaan?</h2>
             <p className="mt-3 text-sm text-charcoal-muted">
               Tim kami siap membantu. Hubungi kami langsung melalui WhatsApp.
             </p>

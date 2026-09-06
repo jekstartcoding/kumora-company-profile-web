@@ -42,6 +42,9 @@ public/build/
 # yarn.lock
 # pnpm-lock.yaml
 
+# Local design drafts
+design*.md
+
 # Local env files
 .env.local
 .env.*.local

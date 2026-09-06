@@ -22,7 +22,7 @@ function PageHero() {
     <section className="relative min-h-[70vh] overflow-hidden">
       <div className="absolute inset-0">
         <img src={heroImg} alt="Interior kamar tidur elegan" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-forest/50" />
+        <div className="absolute inset-0 bg-clay/50" />
       </div>
       <div className="container-wide relative flex min-h-[70vh] flex-col justify-end pb-16 pt-32 md:pb-24">
         <div className="max-w-2xl">
@@ -54,7 +54,7 @@ function OurStory() {
             />
           </div>
           <div>
-            <motion.h2 className="font-serif text-display text-forest text-balance" variants={cardVariants}>
+            <motion.h2 className="font-serif text-display text-clay text-balance" variants={cardVariants}>
               Satu Gagasan Sederhana: Istirahat Lebih Baik untuk Keseharian
             </motion.h2>
             <motion.div className="mt-6 space-y-4 text-base leading-relaxed text-charcoal-muted" variants={cardVariants}>
@@ -91,11 +91,11 @@ function Timeline() {
             <motion.div className="grid grid-cols-5 gap-4" variants={staggerContainer(0.04)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}>
               {TIMELINE.map((item, i) => (
                 <motion.div key={i} className="relative" variants={cardVariants}>
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-2 border-forest bg-ivory font-serif text-sm text-forest">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-2 border-clay bg-ivory font-serif text-sm text-clay">
                     {item.year.slice(-2)}
                   </div>
                   <div className="mt-5 text-center">
-                    <p className="font-serif text-lg text-forest">{item.year}</p>
+                    <p className="font-serif text-lg text-clay">{item.year}</p>
                     <h3 className="mt-1 text-sm font-semibold text-charcoal">{item.title}</h3>
                     <p className="mt-2 text-xs leading-relaxed text-charcoal-muted">
                       {item.description}
@@ -113,8 +113,8 @@ function Timeline() {
             <div className="absolute bottom-2 left-3 top-2 w-px bg-sand-dark" />
             {TIMELINE.map((item, i) => (
               <motion.div key={i} className="relative" variants={cardVariants} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}>
-                <div className="absolute -left-[1.65rem] top-1.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-forest bg-ivory" />
-                <p className="font-serif text-lg text-forest">{item.year}</p>
+                <div className="absolute -left-[1.65rem] top-1.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-clay bg-ivory" />
+                <p className="font-serif text-lg text-clay">{item.year}</p>
                 <h3 className="mt-0.5 text-sm font-semibold text-charcoal">{item.title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-charcoal-muted">
                   {item.description}
@@ -135,7 +135,7 @@ function VisionMission() {
         <motion.div className="grid gap-10 lg:grid-cols-2 lg:gap-16" variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
           <div>
             <p className="eyebrow">Visi</p>
-            <motion.h2 className="mt-3 font-serif text-section text-forest text-balance" variants={cardVariants}>
+            <motion.h2 className="mt-3 font-serif text-section text-clay text-balance" variants={cardVariants}>
               Menjadi nama terpercaya dalam kenyamanan tidur dan kamar sehari-hari.
             </motion.h2>
           </div>
@@ -166,7 +166,7 @@ function CoreValues() {
         <motion.div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8" variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}>
           {CORE_VALUES.map((val, i) => (
             <motion.div key={i} variants={cardVariants} className="rounded-2xl border border-sand-dark/40 bg-ivory p-7 text-center md:p-8">
-              <h3 className="font-serif text-2xl text-forest">{val.title}</h3>
+              <h3 className="font-serif text-2xl text-clay">{val.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-charcoal-muted">{val.description}</p>
             </motion.div>
           ))}
@@ -178,7 +178,7 @@ function CoreValues() {
 
 function BrandCTA() {
   return (
-    <section className="bg-forest py-20 md:py-28">
+    <section className="bg-clay py-20 md:py-28">
       <div className="container-wide">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-serif text-display text-ivory text-balance">
@@ -189,7 +189,7 @@ function BrandCTA() {
           </p>
           <Link
             to="/products"
-            className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-forest transition-all duration-300 hover:bg-gold"
+            className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-clay transition-all duration-300 hover:bg-gold"
           >
             Lihat Produk
             <ArrowRight className="h-4 w-4" />

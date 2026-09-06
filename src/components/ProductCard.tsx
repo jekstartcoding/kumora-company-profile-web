@@ -39,7 +39,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             layoutId={`product-image-${product.id}`}
           />
           {product.new && (
-            <span className="absolute left-3 top-3 rounded-full bg-ivory/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-forest backdrop-blur-sm">
+            <span className="absolute left-3 top-3 rounded-full bg-ivory/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-maroon backdrop-blur-sm">
               Baru
             </span>
           )}
@@ -47,10 +47,10 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       </Link>
       <div className="mt-5 flex flex-1 flex-col">
         <span className="eyebrow text-[11px]">{product.category}</span>
-        <h3 className="mt-2 font-serif text-xl leading-snug text-forest">
+        <h3 className="mt-2 font-serif text-xl leading-snug text-clay">
           <Link
             to={`/products/${product.slug}`}
-            className="transition-colors hover:text-sage"
+            className="transition-colors hover:text-terracotta"
           >
             {product.name}
           </Link>
@@ -59,7 +59,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           {product.shortDescription}
         </p>
         <div className="mt-4 flex items-center justify-between pt-1">
-          <span className="text-base font-medium text-forest">{formatIDR(product.price)}</span>
+          <span className="text-base font-medium text-clay">{formatIDR(product.price)}</span>
           <Link
             to={`/products/${product.slug}`}
             className="link-arrow text-xs"

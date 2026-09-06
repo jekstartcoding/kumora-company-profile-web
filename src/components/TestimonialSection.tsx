@@ -12,7 +12,7 @@ export default function TestimonialSection() {
         <motion.div variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
           <div className="mx-auto max-w-2xl text-center">
             <p className="eyebrow">Testimoni</p>
-            <h2 className="mt-3 font-serif text-section text-forest text-balance">
+            <h2 className="mt-3 font-serif text-section text-clay text-balance">
               Disukai Mereka yang Tidurnya Lebih Nyenyak
             </h2>
           </div>
@@ -30,7 +30,7 @@ export default function TestimonialSection() {
                   <Star key={s} className="h-4 w-4 fill-gold text-gold" />
                 ))}
               </div>
-              <blockquote className="mt-5 flex-1 font-serif text-lg leading-relaxed text-forest md:text-xl">
+              <blockquote className="mt-5 flex-1 font-serif text-lg leading-relaxed text-clay md:text-xl">
                 "{t.quote}"
               </blockquote>
               <figcaption className="mt-6 text-sm text-charcoal-muted">
