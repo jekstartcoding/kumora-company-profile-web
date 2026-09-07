@@ -41,7 +41,7 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-400 ease-out ${
           solid
             ? 'bg-ivory/90 shadow-[0_1px_0_0_rgba(0,0,0,0.06)] backdrop-blur-md'
             : 'bg-transparent'
@@ -68,10 +68,10 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `text-sm font-medium transition-colors duration-300 ${
                     isActive
-                      ? 'text-clay'
+                      ? 'text-plum'
                       : solid
-                        ? 'text-charcoal-light hover:text-clay'
-                        : 'text-charcoal-light hover:text-clay'
+                        ? 'text-charcoal-light hover:text-plum'
+                        : 'text-charcoal-light hover:text-plum'
                   } relative`
                 }
               >
@@ -81,7 +81,8 @@ export default function Navbar() {
                     {isActive && (
                       <motion.span
                         layoutId="nav-underline"
-                        className="absolute -bottom-1.5 left-0 h-px w-full bg-maroon"
+                        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute -bottom-1.5 left-0 h-px w-full bg-plum"
                       />
                     )}
                   </span>
@@ -95,7 +96,7 @@ export default function Navbar() {
               href={generateWhatsAppURL(generateWhatsAppMessage())}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-ivory transition-all duration-300 hover:bg-clay-700 hover:shadow-md md:inline-flex"
+              className="hidden items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-sm font-medium text-ivory transition-colors duration-300 ease-out hover:bg-plum-700 md:inline-flex"
             >
               <MessageCircle className="h-4 w-4" />
               Chat dengan Kami
@@ -103,7 +104,7 @@ export default function Navbar() {
 
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full text-clay transition-colors hover:bg-clay/5 lg:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full text-plum transition-colors hover:bg-plum/5 lg:hidden"
               aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
               aria-expanded={menuOpen}
             >
@@ -120,7 +121,7 @@ export default function Navbar() {
         }`}
       >
         <div
-          className={`absolute inset-0 bg-clay/20 backdrop-blur-sm transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-plum/20 backdrop-blur-sm transition-opacity duration-300 ease-out ${
             menuOpen ? 'opacity-100' : 'opacity-0'
           }`}
           onClick={() => setMenuOpen(false)}
@@ -130,11 +131,11 @@ export default function Navbar() {
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="flex h-16 items-center justify-between border-b border-sand-dark/40 px-6">
+          <div className="flex h-16 items-center justify-between border-b border-rose/40 px-6">
             <img src="/kumora-logo-without-text.png" alt="Kumora" className="h-10 w-auto object-contain" />
             <button
               onClick={() => setMenuOpen(false)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full text-clay hover:bg-clay/5"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full text-plum hover:bg-plum/5"
               aria-label="Tutup menu"
             >
               <X className="h-5 w-5" />
@@ -149,8 +150,8 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `rounded-xl px-4 py-3.5 text-base font-medium transition-colors ${
                     isActive
-                      ? 'bg-clay/8 text-clay'
-                      : 'text-charcoal-light hover:bg-clay/5 hover:text-clay'
+                      ? 'bg-plum/8 text-plum'
+                      : 'text-charcoal-light hover:bg-plum/5 hover:text-plum'
                   }`
                 }
               >
@@ -158,12 +159,12 @@ export default function Navbar() {
               </NavLink>
             ))}
           </div>
-          <div className="border-t border-sand-dark/40 p-6">
+          <div className="border-t border-rose/40 p-6">
             <a
               href={generateWhatsAppURL(generateWhatsAppMessage())}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-clay px-6 py-3.5 text-sm font-medium text-ivory transition-all hover:bg-clay-700"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-plum px-6 py-3.5 text-sm font-medium text-ivory transition-colors duration-300 ease-out hover:bg-plum-700"
             >
               <MessageCircle className="h-4 w-4" />
               Chat dengan Kami

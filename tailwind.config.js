@@ -4,40 +4,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Clay is the primary working color; maroon is reserved for small brand accents.
-        clay: {
-          DEFAULT: '#7F4744',
-          700: '#63302D',
-          800: '#482220',
-          900: '#301613',
-        },
-        maroon: {
-          DEFAULT: '#9F1B32',
-          light: '#C23B54',
-        },
-        terracotta: {
-          DEFAULT: '#C98D76',
-          light: '#E6BEAE',
-          dark: '#B2967D',
+        plum: {
+          DEFAULT: '#735D78',
+          700: '#5C4A60',
+          800: '#453848',
+          light: '#9D8EA0',
         },
         ivory: {
           DEFAULT: '#EEE4E1',
-          dark: '#E7D8C9',
         },
-        sand: {
-          DEFAULT: '#E7D8C9',
-          light: '#F3EAE0',
-          dark: '#E6BEAE',
+        mist: '#ECF8F8',
+        blush: {
+          DEFAULT: '#F7D1CD',
+          dark: '#E8C2CA',
         },
+        rose: '#D1B3C4',
+        mauve: '#B392AC',
+        sand: '#E7D8C9',
+        tan: '#B2967D',
         charcoal: {
           DEFAULT: '#252525',
           light: '#4A4A4A',
           muted: '#6B6B6B',
-        },
-        gold: {
-          DEFAULT: '#B69A6A',
-          light: '#CBB488',
-          dark: '#9A8050',
         },
       },
       fontFamily: {

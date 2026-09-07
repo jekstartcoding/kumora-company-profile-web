@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import SectionHeading from '@/components/SectionHeading';
 import { TIMELINE, CORE_VALUES } from '@/data/products';
 import { motion, useReducedMotion } from 'framer-motion';
-import { staggerContainer, cardVariants } from '@/lib/animations';
+import { revealVariants, staggerContainer } from '@/lib/animations';
 
 const heroImg =
   'https://images.pexels.com/photos/37436121/pexels-photo-37436121.jpeg?auto=compress&cs=tinysrgb&w=1600';
@@ -22,7 +22,7 @@ function PageHero() {
     <section className="relative min-h-[70vh] overflow-hidden">
       <div className="absolute inset-0">
         <img src={heroImg} alt="Interior kamar tidur elegan" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-clay/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-plum/55 via-plum/25 to-transparent" />
       </div>
       <div className="container-wide relative flex min-h-[70vh] flex-col justify-end pb-16 pt-32 md:pb-24">
         <div className="max-w-2xl">
@@ -44,20 +44,31 @@ function OurStory() {
   return (
     <section className="bg-ivory py-20 md:py-28">
       <div className="container-wide">
-        <motion.div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16" variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
-          <div className="overflow-hidden rounded-3xl">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <motion.div
+            className="overflow-hidden rounded-3xl"
+            variants={revealVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <img
               src={storyImg}
               alt="Kamar tidur bergaya dengan dekorasi hangat"
               loading="lazy"
               className="aspect-[4/3] w-full object-cover"
             />
-          </div>
-          <div>
-            <motion.h2 className="font-serif text-display text-clay text-balance" variants={cardVariants}>
+          </motion.div>
+          <motion.div
+            variants={revealVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <h2 className="font-serif text-display text-plum text-balance">
               Satu Gagasan Sederhana: Istirahat Lebih Baik untuk Keseharian
-            </motion.h2>
-            <motion.div className="mt-6 space-y-4 text-base leading-relaxed text-charcoal-muted" variants={cardVariants}>
+            </h2>
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-charcoal-muted">
               <p>
                 Kumora didirikan pada tahun 2015 dengan gagasan sederhana: setiap orang berhak atas
                 tempat istirahat yang nyaman. Apa yang dimulai sebagai koleksi kecil bantal sehari-hari
@@ -68,34 +79,38 @@ function OurStory() {
                 merek, sambil tetap berpegang pada prinsip awal: menjadikan istirahat sehari-hari
                 lebih baik.
               </p>
-            </motion.div>
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
 function Timeline() {
+  const shouldReduce = useReducedMotion();
   return (
-    <section className="bg-sand/50 py-20 md:py-28">
+    <section className="bg-mist/50 py-20 md:py-28">
       <div className="container-wide">
-        <motion.div variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
-          <SectionHeading eyebrow="Perjalanan Kami" title="Pencapaian" align="center" />
-        </motion.div>
+        <SectionHeading eyebrow="Perjalanan Kami" title="Pencapaian" align="center" />
 
-        {/* Desktop horizontal timeline */}
-        <div className="mt-16 hidden md:block">
+        <motion.div
+          className="mt-16 hidden md:block"
+          variants={staggerContainer(0.05)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+        >
           <div className="relative">
-            <div className="absolute left-0 right-0 top-6 h-px bg-sand-dark" />
-            <motion.div className="grid grid-cols-5 gap-4" variants={staggerContainer(0.04)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}>
+            <div className="absolute left-0 right-0 top-6 h-px bg-rose" />
+            <div className="grid grid-cols-5 gap-4">
               {TIMELINE.map((item, i) => (
-                <motion.div key={i} className="relative" variants={cardVariants}>
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-2 border-clay bg-ivory font-serif text-sm text-clay">
+                <motion.div key={i} className="relative" variants={shouldReduce ? undefined : revealVariants}>
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-2 border-plum bg-ivory font-serif text-sm text-plum">
                     {item.year.slice(-2)}
                   </div>
                   <div className="mt-5 text-center">
-                    <p className="font-serif text-lg text-clay">{item.year}</p>
+                    <p className="font-serif text-lg text-plum">{item.year}</p>
                     <h3 className="mt-1 text-sm font-semibold text-charcoal">{item.title}</h3>
                     <p className="mt-2 text-xs leading-relaxed text-charcoal-muted">
                       {item.description}
@@ -103,23 +118,22 @@ function Timeline() {
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Mobile vertical timeline */}
         <div className="mt-12 md:hidden">
           <div className="relative space-y-8 pl-8">
-            <div className="absolute bottom-2 left-3 top-2 w-px bg-sand-dark" />
+            <div className="absolute bottom-2 left-3 top-2 w-px bg-rose" />
             {TIMELINE.map((item, i) => (
-              <motion.div key={i} className="relative" variants={cardVariants} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}>
-                <div className="absolute -left-[1.65rem] top-1.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-clay bg-ivory" />
-                <p className="font-serif text-lg text-clay">{item.year}</p>
+              <div key={i} className="relative">
+                <div className="absolute -left-[1.65rem] top-1.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-plum bg-ivory" />
+                <p className="font-serif text-lg text-plum">{item.year}</p>
                 <h3 className="mt-0.5 text-sm font-semibold text-charcoal">{item.title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-charcoal-muted">
                   {item.description}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -132,41 +146,50 @@ function VisionMission() {
   return (
     <section className="bg-ivory py-20 md:py-28">
       <div className="container-wide">
-        <motion.div className="grid gap-10 lg:grid-cols-2 lg:gap-16" variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
             <p className="eyebrow">Visi</p>
-            <motion.h2 className="mt-3 font-serif text-section text-clay text-balance" variants={cardVariants}>
+            <h2 className="mt-3 font-serif text-section text-plum text-balance">
               Menjadi nama terpercaya dalam kenyamanan tidur dan kamar sehari-hari.
-            </motion.h2>
+            </h2>
           </div>
           <div>
             <p className="eyebrow">Misi</p>
-            <motion.ul className="mt-4 space-y-3" variants={cardVariants}>
+            <ul className="mt-4 space-y-3">
               {missions.map((m, i) => (
                 <li key={i} className="flex items-start gap-3 text-base text-charcoal-muted">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-mauve" />
                   {m}
                 </li>
               ))}
-            </motion.ul>
+            </ul>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
 function CoreValues() {
+  const shouldReduce = useReducedMotion();
   return (
-    <section className="bg-sand/50 py-20 md:py-28">
+    <section className="bg-blush/30 py-20 md:py-28">
       <div className="container-wide">
-        <motion.div variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }}>
-          <SectionHeading eyebrow="Yang Kami Pegang" title="Nilai Utama" align="center" />
-        </motion.div>
-        <motion.div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8" variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}>
+        <SectionHeading eyebrow="Yang Kami Pegang" title="Nilai Utama" align="center" />
+        <motion.div
+          className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8"
+          variants={staggerContainer(0.05)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+        >
           {CORE_VALUES.map((val, i) => (
-            <motion.div key={i} variants={cardVariants} className="rounded-2xl border border-sand-dark/40 bg-ivory p-7 text-center md:p-8">
-              <h3 className="font-serif text-2xl text-clay">{val.title}</h3>
+            <motion.div
+              key={i}
+              variants={shouldReduce ? undefined : revealVariants}
+              className="rounded-2xl border border-rose/40 bg-ivory p-7 text-center md:p-8"
+            >
+              <h3 className="font-serif text-2xl text-plum">{val.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-charcoal-muted">{val.description}</p>
             </motion.div>
           ))}
@@ -178,7 +201,7 @@ function CoreValues() {
 
 function BrandCTA() {
   return (
-    <section className="bg-clay py-20 md:py-28">
+    <section className="bg-plum py-20 md:py-28">
       <div className="container-wide">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-serif text-display text-ivory text-balance">
@@ -189,7 +212,7 @@ function BrandCTA() {
           </p>
           <Link
             to="/products"
-            className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-clay transition-all duration-300 hover:bg-gold"
+            className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-blush-dark"
           >
             Lihat Produk
             <ArrowRight className="h-4 w-4" />

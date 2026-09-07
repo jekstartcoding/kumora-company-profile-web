@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { staggerContainer } from '@/lib/animations';
 import ProductCard from '@/components/ProductCard';
 import SectionHeading from '@/components/SectionHeading';
 import {
@@ -91,7 +89,7 @@ export default function ProductsPage() {
 
   return (
     <>
-      <section className="bg-sand/40 pb-12 pt-28 md:pt-36">
+      <section className="bg-blush/30 pb-12 pt-28 md:pt-36">
         <div className="container-wide">
           <SectionHeading
             eyebrow="Koleksi Kumora"
@@ -104,7 +102,7 @@ export default function ProductsPage() {
       <section className="bg-ivory pb-20 pt-8 md:pb-28">
         <div className="container-wide">
           {/* Controls */}
-          <div className="flex flex-col gap-4 border-b border-sand-dark/40 pb-6">
+          <div className="flex flex-col gap-4 border-b border-rose/40 pb-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal-muted" />
@@ -113,13 +111,13 @@ export default function ProductsPage() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Cari produk..."
-                  className="w-full rounded-full border border-sand-dark/50 bg-ivory py-3 pl-11 pr-4 text-sm text-charcoal placeholder:text-charcoal-muted/60 focus:border-maroon focus:outline-none focus:ring-1 focus:ring-maroon"
+                  className="w-full rounded-full border border-rose/50 bg-ivory py-3 pl-11 pr-4 text-sm text-charcoal placeholder:text-charcoal-muted/60 focus:border-plum focus:outline-none focus:ring-1 focus:ring-plum"
                 />
               </div>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setFiltersOpen((v) => !v)}
-                  className="inline-flex items-center gap-2 rounded-full border border-sand-dark/50 px-5 py-3 text-sm font-medium text-charcoal transition-colors hover:border-clay hover:text-clay lg:hidden"
+                  className="inline-flex items-center gap-2 rounded-full border border-rose/50 px-5 py-3 text-sm font-medium text-charcoal transition-colors hover:border-plum hover:text-plum lg:hidden"
                 >
                   <SlidersHorizontal className="h-4 w-4" />
                   Filter
@@ -128,7 +126,7 @@ export default function ProductsPage() {
                   <select
                     value={sort}
                     onChange={(e) => setSort(e.target.value as SortOption)}
-                    className="appearance-none rounded-full border border-sand-dark/50 bg-ivory py-3 pl-5 pr-10 text-sm font-medium text-charcoal focus:border-maroon focus:outline-none focus:ring-1 focus:ring-maroon"
+                    className="appearance-none rounded-full border border-rose/50 bg-ivory py-3 pl-5 pr-10 text-sm font-medium text-charcoal focus:border-plum focus:outline-none focus:ring-1 focus:ring-plum"
                   >
                     {sortOptions.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -149,10 +147,10 @@ export default function ProductsPage() {
                 <button
                   key={cat}
                   onClick={() => handleCategoryChange(cat)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
                     category === cat
-                      ? 'bg-clay text-ivory'
-                      : 'border border-sand-dark/40 text-charcoal-light hover:border-clay hover:text-clay'
+                      ? 'bg-plum text-ivory'
+                      : 'border border-rose/40 text-charcoal-light hover:border-plum hover:text-plum'
                   }`}
                 >
                   {cat}
@@ -167,10 +165,10 @@ export default function ProductsPage() {
                   <button
                     key={cat}
                     onClick={() => handleCategoryChange(cat)}
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
                       category === cat
-                        ? 'bg-clay text-ivory'
-                        : 'border border-sand-dark/40 text-charcoal-light hover:border-clay hover:text-clay'
+                        ? 'bg-plum text-ivory'
+                        : 'border border-rose/40 text-charcoal-light hover:border-plum hover:text-plum'
                     }`}
                   >
                     {cat}
@@ -188,7 +186,7 @@ export default function ProductsPage() {
             {hasActiveFilters && (
               <button
                 onClick={handleReset}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-clay transition-colors hover:text-terracotta"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-plum transition-colors hover:text-mauve"
               >
                 <X className="h-3.5 w-3.5" />
                 Reset Filter
@@ -198,19 +196,14 @@ export default function ProductsPage() {
 
           {/* Grid */}
           {filtered.length > 0 ? (
-            <motion.div
-              className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4"
-              variants={staggerContainer(0.06)}
-              initial="hidden"
-              animate="show"
-            >
+            <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
               {filtered.map((product, i) => (
                 <ProductCard key={product.id} product={product} index={i} />
               ))}
-            </motion.div>
+            </div>
           ) : (
-            <div className="mt-16 flex flex-col items-center justify-center rounded-2xl border border-sand-dark/40 bg-sand/30 px-6 py-16 text-center">
-              <h3 className="font-serif text-2xl text-clay">Produk tidak ditemukan</h3>
+            <div className="mt-16 flex flex-col items-center justify-center rounded-2xl border border-rose/40 bg-blush/30 px-6 py-16 text-center">
+              <h3 className="font-serif text-2xl text-plum">Produk tidak ditemukan</h3>
               <p className="mt-3 max-w-sm text-sm text-charcoal-muted">
                 Coba cari produk lain atau reset filter.
               </p>

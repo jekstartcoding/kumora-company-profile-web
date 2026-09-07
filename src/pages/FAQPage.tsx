@@ -6,7 +6,7 @@ import { MessageCircle } from 'lucide-react';
 export default function FAQPage() {
   return (
     <>
-      <section className="bg-sand/40 pb-12 pt-28 md:pt-36">
+      <section className="bg-mist/50 pb-12 pt-28 md:pt-36">
         <div className="container-wide">
           <SectionHeading
             eyebrow="Pusat Bantuan"
@@ -22,8 +22,8 @@ export default function FAQPage() {
             <Accordion items={FAQS} />
           </div>
 
-          <div className="mx-auto mt-14 max-w-2xl rounded-2xl border border-sand-dark/40 bg-sand/30 p-8 text-center md:p-10">
-            <h2 className="font-serif text-2xl text-clay">Masih memiliki pertanyaan?</h2>
+          <div className="mx-auto mt-14 max-w-2xl rounded-2xl border border-rose/40 bg-blush/30 p-8 text-center md:p-10">
+            <h2 className="font-serif text-2xl text-plum">Masih memiliki pertanyaan?</h2>
             <p className="mt-3 text-sm text-charcoal-muted">
               Tim kami siap membantu. Hubungi kami langsung melalui WhatsApp.
             </p>
@@ -31,7 +31,7 @@ export default function FAQPage() {
               href={generateWhatsAppURL(generateWhatsAppMessage())}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-whatsapp mt-6"
+              className="btn-primary mt-6"
             >
               <MessageCircle className="h-4 w-4" />
               Chat melalui WhatsApp

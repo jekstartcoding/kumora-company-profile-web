@@ -16,7 +16,7 @@
   }
 
   ::selection {
-    background-color: #7f4744;
+    background-color: #735d78;
     color: #eee4e1;
   }
 
@@ -29,30 +29,26 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #e6beae;
+    background: #d1b3c4;
     border-radius: 5px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #b2967d;
+    background: #9d8ea0;
   }
 }
 
 @layer components {
   .eyebrow {
-    @apply text-xs font-medium uppercase tracking-[0.2em] text-terracotta;
+    @apply text-xs font-medium uppercase tracking-[0.2em] text-mauve;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-clay px-7 py-3.5 text-sm font-medium text-ivory transition-all duration-300 hover:bg-clay-700 hover:shadow-lg;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-plum px-7 py-3.5 text-sm font-medium text-ivory transition-colors duration-300 ease-out hover:bg-plum-700 hover:shadow-md;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-clay/20 bg-transparent px-7 py-3.5 text-sm font-medium text-clay transition-all duration-300 hover:border-clay hover:bg-clay hover:text-ivory;
-  }
-
-  .btn-whatsapp {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#1da851] hover:shadow-lg;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-plum/20 bg-transparent px-7 py-3.5 text-sm font-medium text-plum transition-colors duration-300 ease-out hover:border-plum hover:bg-plum hover:text-ivory;
   }
 
   .container-wide {
@@ -60,58 +56,13 @@
   }
 
   .link-arrow {
-    @apply inline-flex items-center gap-1.5 text-sm font-medium text-clay transition-all duration-300 hover:gap-2.5;
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-plum transition-[gap,color] duration-300 ease-out hover:gap-2.5;
   }
 }
 
 @layer utilities {
-  .page-enter {
-    animation: pageEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  /* Disabled legacy JS/CSS reveal: controlled now via framer-motion */
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-  }
-
   .text-balance {
     text-wrap: balance;
-  }
-}
-
-/* small utility animation used in Hero for staggered inline delays */
-.animate-fade-up {
-  opacity: 0;
-  transform: translateY(12px);
-  animation: fadeUp 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -123,12 +74,5 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  .page-enter,
-  .reveal {
-    opacity: 1;
-    transform: none;
-    animation: none;
   }
 }

@@ -7,7 +7,7 @@ import SectionHeading from '@/components/SectionHeading';
 import CategorySection from '@/components/CategorySection';
 import TestimonialSection from '@/components/TestimonialSection';
 import { getFeaturedProducts, generateWhatsAppMessage, generateWhatsAppURL } from '@/data/products';
-import { cardVariants, staggerContainer } from '@/lib/animations';
+import { revealVariants, staggerContainer } from '@/lib/animations';
 
 const aboutImg =
   'https://images.pexels.com/photos/27164976/pexels-photo-27164976.jpeg?auto=compress&cs=tinysrgb&w=1200';
@@ -44,25 +44,20 @@ function FeaturedSection() {
   const featured = getFeaturedProducts();
 
   return (
-    <motion.section
-      className="bg-ivory py-20 md:py-28"
-      variants={staggerContainer(0.06)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: '-120px' }}
-    >
+    <section className="bg-ivory py-20 md:py-28">
       <div className="container-wide">
-        <motion.div variants={cardVariants}>
-          <SectionHeading
-            eyebrow="Koleksi Kami"
-            title="Kenyamanan yang Dipilih untuk Anda"
-            description="Temukan perlengkapan sehari-hari yang dirancang untuk menjadikan kamar Anda lebih nyaman."
-          />
-        </motion.div>
+        <SectionHeading
+          eyebrow="Koleksi Kami"
+          title="Kenyamanan yang Dipilih untuk Anda"
+          description="Temukan perlengkapan sehari-hari yang dirancang untuk menjadikan kamar Anda lebih nyaman."
+        />
 
         <motion.div
           className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8"
           variants={staggerContainer(0.06)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
         >
           {featured.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
@@ -76,24 +71,18 @@ function FeaturedSection() {
           </Link>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 function AboutSection() {
   return (
-    <motion.section
-      className="bg-sand/50 py-20 md:py-28"
-      variants={staggerContainer(0.06)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: '-120px' }}
-    >
+    <section className="bg-mist/50 py-20 md:py-28">
       <div className="container-wide">
-        <motion.div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16" variants={cardVariants}>
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="order-2 lg:order-1">
             <p className="eyebrow">Tentang Kumora</p>
-            <h2 className="mt-3 font-serif text-display text-clay text-balance">
+            <h2 className="mt-3 font-serif text-display text-plum text-balance">
               Kenyamanan Berawal dari Cara Anda Beristirahat.
             </h2>
             <div className="mt-6 space-y-4 text-base leading-relaxed text-charcoal-muted">
@@ -113,62 +102,54 @@ function AboutSection() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="order-1 overflow-hidden rounded-3xl lg:order-2">
+          <motion.div
+            className="order-1 overflow-hidden rounded-3xl lg:order-2"
+            variants={revealVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <img
               src={aboutImg}
               alt="Kamar tidur minimalis dengan pencahayaan alami yang hangat"
               loading="lazy"
               className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
             />
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 function WhySection() {
   return (
-    <motion.section
-      className="bg-ivory py-20 md:py-28"
-      variants={staggerContainer(0.06)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: '-120px' }}
-    >
+    <section className="bg-ivory py-20 md:py-28">
       <div className="container-wide">
-        <motion.div variants={cardVariants}>
-          <SectionHeading
-            eyebrow="Mengapa Kumora"
-            title="Dibuat dengan Kenyamanan sebagai Dasar"
-            align="center"
-          />
-        </motion.div>
-        <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-sand-dark/40 bg-sand-dark/40 sm:grid-cols-2 lg:grid-cols-4">
+        <SectionHeading
+          eyebrow="Mengapa Kumora"
+          title="Dibuat dengan Kenyamanan sebagai Dasar"
+          align="center"
+        />
+        <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-rose/40 bg-rose/40 sm:grid-cols-2 lg:grid-cols-4">
           {principles.map((p, i) => (
             <div key={i} className="bg-ivory p-7 md:p-8">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-clay/8 text-clay">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-mauve/15 text-plum">
                 <p.icon className="h-5 w-5" strokeWidth={1.5} />
               </div>
-              <h3 className="mt-5 font-serif text-lg text-clay">{p.title}</h3>
+              <h3 className="mt-5 font-serif text-lg text-plum">{p.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-charcoal-muted">{p.description}</p>
             </div>
           ))}
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 function StatementSection() {
   return (
-    <motion.section
-      className="relative overflow-hidden"
-      variants={staggerContainer(0.06)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: '-120px' }}
-    >
+    <section className="relative overflow-hidden">
       <div className="absolute inset-0">
         <img
           src={statementImg}
@@ -176,31 +157,31 @@ function StatementSection() {
           loading="lazy"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-clay/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-plum/55 via-plum/25 to-transparent" />
       </div>
       <div className="container-wide relative py-24 md:py-36">
-        <motion.div className="mx-auto max-w-3xl text-center" variants={cardVariants}>
+        <motion.div
+          className="mx-auto max-w-3xl text-center"
+          variants={revealVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <h2 className="font-serif text-display text-ivory text-balance md:text-[3.5rem]">
             Istirahat Anda Berarti.
           </h2>
           <p className="mt-5 text-lg text-ivory/80">Karena hari yang lebih baik dimulai dari malam yang lebih nyenyak.</p>
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 function FinalCTA() {
   return (
-    <motion.section
-      className="bg-clay py-20 md:py-28"
-      variants={staggerContainer(0.06)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: '-120px' }}
-    >
+    <section className="bg-plum py-20 md:py-28">
       <div className="container-wide">
-        <motion.div className="mx-auto max-w-2xl text-center" variants={cardVariants}>
+        <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-serif text-display text-ivory text-balance">
             Siap Menemukan Kenyamanan Anda?
           </h2>
@@ -211,7 +192,7 @@ function FinalCTA() {
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/products"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-clay transition-all duration-300 hover:bg-gold hover:text-clay"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-blush-dark"
             >
               Lihat Produk
               <ArrowRight className="h-4 w-4" />
@@ -220,15 +201,15 @@ function FinalCTA() {
               href={generateWhatsAppURL(generateWhatsAppMessage())}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-ivory/30 px-7 py-3.5 text-sm font-medium text-ivory transition-all duration-300 hover:bg-ivory/10"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-ivory/30 px-7 py-3.5 text-sm font-medium text-ivory transition-colors duration-300 ease-out hover:bg-ivory/10"
             >
               <MessageCircle className="h-4 w-4" />
               Chat melalui WhatsApp
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
