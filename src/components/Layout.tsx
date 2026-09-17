@@ -11,6 +11,11 @@ export default function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const hideWhatsApp = location.pathname.startsWith('/product/');
 
+  // Admin panel punya layout-nya sendiri (sidebar Filament) — tanpa chrome customer.
+  if (location.pathname.startsWith('/admin')) {
+    return <>{children}</>;
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <BottomNav />

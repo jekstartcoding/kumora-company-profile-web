@@ -1,6 +1,7 @@
-// Fase 6.2 — ResourceTable generik: render kolom dari config, sorting klik header,
-// aksi Edit/Delete per baris (pola resource seragam — Prinsip Kerja #5).
+// ResourceTable generik ala Filament: kartu ber-header, tabel strip halus,
+// sorting klik header, aksi Edit/Delete per baris, modal konfirmasi hapus.
 import { useMemo, useState } from 'react';
+import { Pencil, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import type { ResourceConfig } from '../resources/types';
 
 interface Props<T extends { id: string }> {
@@ -26,12 +27,11 @@ export default function ResourceTable<T extends { id: string }>({
 
   const sorted = useMemo(() => {
     if (!sortKey) return rows;
-    const sorted = [...rows].sort((a, b) => {
+    return [...rows].sort((a, b) => {
       const av = String((a as Record<string, unknown>)[sortKey] ?? '');
       const bv = String((b as Record<string, unknown>)[sortKey] ?? '');
       return av.localeCompare(bv) * (sortDir === 'asc' ? 1 : -1);
     });
-    return sorted;
   }, [rows, sortKey, sortDir]);
 
   const toggleSort = (key: string) => {
@@ -45,84 +45,92 @@ export default function ResourceTable<T extends { id: string }>({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">{config.name}</h1>
-        <div className="flex items-center gap-3">{toolbar}</div>
-      </div>
+      <div className="adm-card">
+        <div className="adm-card-header">
+          <h1 className="adm-card-title text-base">{config.name}</h1>
+          <div className="flex items-center gap-2">{toolbar}</div>
+        </div>
 
-      <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-        <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              {config.columns.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => toggleSort(col.key)}
-                  className="cursor-pointer px-4 py-3 text-left font-medium text-gray-500 select-none hover:text-gray-700"
-                >
-                  {col.label}
-                  {sortKey === col.key ? (sortDir === 'asc' ? ' ▲' : ' ▼') : ''}
-                </th>
-              ))}
-              <th className="px-4 py-3 text-right font-medium text-gray-500">Aksi</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {loading && (
+        <div className="adm-table-wrap">
+          <table className="adm-table">
+            <thead>
               <tr>
-                <td colSpan={config.columns.length + 1} className="px-4 py-8 text-center text-gray-400">
-                  Memuat…
-                </td>
-              </tr>
-            )}
-            {!loading && sorted.length === 0 && (
-              <tr>
-                <td colSpan={config.columns.length + 1} className="px-4 py-8 text-center text-gray-400">
-                  Belum ada data.
-                </td>
-              </tr>
-            )}
-            {sorted.map((row) => (
-              <tr key={row.id} className="hover:bg-gray-50">
                 {config.columns.map((col) => (
-                  <td key={col.key} className="px-4 py-3 text-gray-700">
-                    {col.render
-                      ? col.render(row)
-                      : String((row as Record<string, unknown>)[col.key] ?? '')}
-                  </td>
+                  <th
+                    key={col.key}
+                    onClick={() => toggleSort(col.key)}
+                    className="cursor-pointer select-none hover:text-charcoal"
+                  >
+                    <span className="inline-flex items-center gap-1">
+                      {col.label}
+                      {sortKey === col.key ? (
+                        sortDir === 'asc' ? (
+                          <ArrowUp className="h-3 w-3" />
+                        ) : (
+                          <ArrowDown className="h-3 w-3" />
+                        )
+                      ) : null}
+                    </span>
+                  </th>
                 ))}
-                <td className="px-4 py-3 text-right whitespace-nowrap">
-                  <button
-                    onClick={() => onEdit(row)}
-                    className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => setDeleting(row)}
-                    className="ml-2 rounded border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50"
-                  >
-                    Delete
-                  </button>
-                </td>
+                <th className="text-right">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {loading && (
+                <tr>
+                  <td colSpan={config.columns.length + 1} className="py-10 text-center text-gray-400">
+                    <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-500 align-middle" />
+                    Memuat…
+                  </td>
+                </tr>
+              )}
+              {!loading && sorted.length === 0 && (
+                <tr>
+                  <td colSpan={config.columns.length + 1} className="py-10 text-center text-gray-400">
+                    Belum ada data.
+                  </td>
+                </tr>
+              )}
+              {sorted.map((row) => (
+                <tr key={row.id}>
+                  {config.columns.map((col) => (
+                    <td key={col.key}>
+                      {col.render
+                        ? col.render(row)
+                        : String((row as Record<string, unknown>)[col.key] ?? '')}
+                    </td>
+                  ))}
+                  <td className="whitespace-nowrap text-right">
+                    <button onClick={() => onEdit(row)} className="adm-btn-ghost px-2 py-1.5" title="Edit">
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => setDeleting(row)}
+                      className="adm-btn-ghost px-2 py-1.5 text-red-600 hover:bg-red-50 hover:text-red-700"
+                      title="Hapus"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {deleting && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-            <h2 className="text-lg font-semibold text-gray-900">Hapus {config.name}?</h2>
-            <p className="mt-2 text-sm text-gray-600">
+        <div className="adm-modal-overlay" onClick={() => setDeleting(null)}>
+          <div className="adm-modal max-w-sm" onClick={(e) => e.stopPropagation()}>
+            <div className="adm-modal-header">
+              <h2 className="adm-modal-title">Hapus {config.name}?</h2>
+            </div>
+            <div className="adm-modal-body text-sm text-gray-600">
               Data yang dihapus tidak bisa dikembalikan.
-            </p>
-            <div className="mt-5 flex justify-end gap-2">
-              <button
-                onClick={() => setDeleting(null)}
-                className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-              >
+            </div>
+            <div className="adm-modal-footer">
+              <button onClick={() => setDeleting(null)} className="adm-btn-secondary">
                 Batal
               </button>
               <button
@@ -130,7 +138,7 @@ export default function ResourceTable<T extends { id: string }>({
                   onDelete(deleting);
                   setDeleting(null);
                 }}
-                className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+                className="adm-btn bg-red-600 text-white hover:bg-red-700"
               >
                 Ya, hapus
               </button>

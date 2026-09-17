@@ -1,0 +1,138 @@
+/* Restrukturisasi + redesign — styling admin panel ala Filament, di atas palet
+   Kumora (plum/ivory/mist). Dipisah dari CSS customer supaya tidak saling ganggu.
+   Catatan: tiap kelas hanya @apply utility Tailwind asli (bukan kelas custom lain)
+   supaya komposisi @apply selalu valid. */
+
+/* ===== Layout: sidebar gelap + konten terang ===== */
+.adm-shell {
+    @apply flex min-h-screen bg-gray-100;
+  }
+  .adm-sidebar {
+    @apply flex h-full w-64 flex-col bg-charcoal text-gray-100 shadow-xl;
+  }
+  .adm-sidebar-brand {
+    @apply flex h-16 items-center gap-2.5 border-b border-white/10 px-5;
+  }
+  .adm-sidebar-section {
+    @apply px-5 pb-2 pt-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-gray-500;
+  }
+  .adm-nav-item {
+    @apply mx-3 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white;
+  }
+  .adm-nav-item-active {
+    @apply bg-plum text-white hover:bg-plum hover:text-white;
+  }
+  .adm-sidebar-footer {
+    @apply border-t border-white/10 px-5 py-4 text-xs text-gray-500;
+  }
+
+  .adm-topbar {
+    @apply sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white/95 px-4 backdrop-blur sm:px-6;
+  }
+  .adm-content {
+    @apply flex-1 px-4 py-6 sm:px-6 lg:px-8;
+  }
+
+  /* ===== Kartu section (Filament "card") ===== */
+  .adm-card {
+    @apply rounded-xl border border-gray-200 bg-white shadow-sm;
+  }
+  .adm-card-header {
+    @apply flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 px-5 py-4;
+  }
+  .adm-card-title {
+    @apply text-sm font-semibold text-charcoal;
+  }
+  .adm-card-body {
+    @apply px-5 py-4;
+  }
+
+  /* ===== Tombol ===== */
+  .adm-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-plum/40 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .adm-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-plum px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-plum-700 focus:outline-none focus:ring-2 focus:ring-plum/40 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .adm-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .adm-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-charcoal focus:outline-none;
+  }
+
+  /* ===== Badge ===== */
+  .adm-badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  .adm-badge-success {
+    @apply inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20;
+  }
+  .adm-badge-gray {
+    @apply inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600 ring-1 ring-gray-500/20;
+  }
+  .adm-badge-warning {
+    @apply inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-amber-600/20;
+  }
+  .adm-badge-plum {
+    @apply inline-flex items-center gap-1 rounded-full bg-plum/10 px-2.5 py-0.5 text-xs font-medium text-plum ring-1 ring-plum/20;
+  }
+
+  /* ===== Tabel ===== */
+  .adm-table-wrap {
+    @apply overflow-x-auto;
+  }
+  .adm-table {
+    @apply min-w-full divide-y divide-gray-200 text-sm;
+  }
+  .adm-table thead th {
+    @apply bg-gray-50 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500;
+  }
+  .adm-table tbody td {
+    @apply px-5 py-3.5 text-charcoal;
+  }
+  .adm-table tbody tr {
+    @apply border-b border-gray-100 last:border-0 hover:bg-gray-50/70;
+  }
+
+  /* ===== Form ===== */
+  .adm-label {
+    @apply mb-1.5 block text-sm font-medium text-charcoal;
+  }
+  .adm-input {
+    @apply w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-charcoal placeholder:text-gray-400 focus:border-plum focus:outline-none focus:ring-2 focus:ring-plum/20;
+  }
+  .adm-field-error {
+    @apply mt-1 text-xs text-red-600;
+  }
+  .adm-hint {
+    @apply mt-1 text-xs text-gray-500;
+  }
+
+  /* ===== Modal ===== */
+  .adm-modal-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-charcoal/50 p-4 backdrop-blur-sm;
+  }
+  .adm-modal {
+    @apply max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white shadow-2xl;
+  }
+  .adm-modal-header {
+    @apply flex items-center justify-between border-b border-gray-100 px-5 py-4;
+  }
+  .adm-modal-title {
+    @apply text-base font-semibold text-charcoal;
+  }
+  .adm-modal-body {
+    @apply px-5 py-4;
+  }
+  .adm-modal-footer {
+    @apply flex justify-end gap-2 border-t border-gray-100 px-5 py-4;
+  }
+
+  /* ===== Login ===== */
+  .adm-login-wrap {
+    @apply flex min-h-screen items-center justify-center bg-charcoal px-4;
+  }
+  .adm-login-card {
+  @apply w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl;
+}

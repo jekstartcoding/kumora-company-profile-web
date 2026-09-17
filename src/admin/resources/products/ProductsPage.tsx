@@ -2,6 +2,7 @@
 // form create/edit lengkap (7.2) dibangun di langkah berikutnya.
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 import ResourceTable from '../../components/ResourceTable';
 import { apiGet, apiSend, apiErrorMessage } from '../../lib/apiClient';
 import { productResource } from './config';
@@ -51,9 +52,10 @@ export default function ProductsPage() {
           {error && <span className="text-xs text-red-600">{error}</span>}
           <button
             onClick={() => navigate('/admin/products/new')}
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+            className="adm-btn-primary"
           >
-            + New Product
+            <Plus className="h-4 w-4" />
+            New Product
           </button>
         </>
       }

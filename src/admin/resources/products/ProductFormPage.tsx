@@ -321,10 +321,10 @@ export default function ProductFormPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">
+        <h1 className="text-xl font-semibold text-charcoal">
           {isNew ? 'New Product' : 'Edit Product'}
         </h1>
-        <button onClick={() => navigate('/admin/products')} className="text-sm text-gray-500 hover:text-gray-700">
+        <button onClick={() => navigate('/admin/products')} className="adm-btn-ghost">
           ← Kembali ke list
         </button>
       </div>
@@ -396,7 +396,7 @@ export default function ProductFormPage() {
           )}
           {variants.map((v, idx) =>
             v._removed ? null : (
-              <div key={v.id ?? `new-${idx}`} className="flex items-end gap-3 rounded-md border border-gray-200 bg-gray-50 p-3">
+              <div key={v.id ?? `new-${idx}`} className="flex items-end gap-3 rounded-lg border border-gray-200 bg-gray-50/70 p-4">
                 <label className="block flex-1 text-sm">
                   <span className="mb-1 block text-gray-600">Label *</span>
                   <input
@@ -404,7 +404,7 @@ export default function ProductFormPage() {
                     onChange={(e) =>
                       setVariants((vs) => vs.map((x, i) => (i === idx ? { ...x, label: e.target.value } : x)))
                     }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2"
+                    className="adm-input"
                     placeholder="Firm — 60x40cm"
                   />
                 </label>
@@ -416,7 +416,7 @@ export default function ProductFormPage() {
                     onChange={(e) =>
                       setVariants((vs) => vs.map((x, i) => (i === idx ? { ...x, price: Number(e.target.value) } : x)))
                     }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2"
+                    className="adm-input"
                   />
                 </label>
                 <label className="flex items-center gap-2 pb-2 text-sm text-gray-700">
@@ -445,7 +445,7 @@ export default function ProductFormPage() {
           <button
             type="button"
             onClick={() => setVariants((vs) => [...vs, { label: '', price: 0, is_default: vs.length === 0 }])}
-            className="rounded-md border border-dashed border-gray-300 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+            className="w-full rounded-lg border border-dashed border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-plum hover:text-plum"
           >
             + Tambah Variant
           </button>
@@ -460,7 +460,7 @@ export default function ProductFormPage() {
           )}
           {reviews.map((r, idx) =>
             (r as any)._removed ? null : (
-              <div key={r.id ?? `new-${idx}`} className="rounded-md border border-gray-200 bg-gray-50 p-3">
+              <div key={r.id ?? `new-${idx}`} className="rounded-lg border border-gray-200 bg-gray-50/70 p-4">
                 <div className="flex items-end gap-3">
                   <label className="block flex-1 text-sm">
                     <span className="mb-1 block text-gray-600">Author *</span>
@@ -469,7 +469,7 @@ export default function ProductFormPage() {
                       onChange={(e) =>
                         setReviews((rs) => rs.map((x, i) => (i === idx ? { ...x, author: e.target.value } : x)))
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2"
+                      className="adm-input"
                     />
                   </label>
                   <label className="block w-24 text-sm">
@@ -479,7 +479,7 @@ export default function ProductFormPage() {
                       onChange={(e) =>
                         setReviews((rs) => rs.map((x, i) => (i === idx ? { ...x, rating: Number(e.target.value) } : x)))
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2"
+                      className="adm-input"
                     >
                       {[1, 2, 3, 4, 5].map((n) => (
                         <option key={n} value={n}>{n}</option>
@@ -493,7 +493,7 @@ export default function ProductFormPage() {
                       onChange={(e) =>
                         setReviews((rs) => rs.map((x, i) => (i === idx ? { ...x, sleep_position: e.target.value || null } : x)))
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2"
+                      className="adm-input"
                     >
                       <option value="">—</option>
                       {SLEEP_POSITION_OPTIONS.map((o) => (
@@ -508,7 +508,7 @@ export default function ProductFormPage() {
                       onChange={(e) =>
                         setReviews((rs) => rs.map((x, i) => (i === idx ? { ...x, body_type: e.target.value || null } : x)))
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2"
+                      className="adm-input"
                     >
                       <option value="">—</option>
                       {BODY_TYPE_OPTIONS.map((o) => (
@@ -532,7 +532,7 @@ export default function ProductFormPage() {
                     onChange={(e) =>
                       setReviews((rs) => rs.map((x, i) => (i === idx ? { ...x, comment: e.target.value } : x)))
                     }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2"
+                    className="adm-input"
                   />
                 </label>
               </div>
@@ -543,7 +543,7 @@ export default function ProductFormPage() {
             onClick={() =>
               setReviews((rs) => [...rs, { author: '', rating: 5, comment: '', sleep_position: null, body_type: null }])
             }
-            className="rounded-md border border-dashed border-gray-300 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+            className="w-full rounded-lg border border-dashed border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-plum hover:text-plum"
           >
             + Tambah Review
           </button>
@@ -551,20 +551,20 @@ export default function ProductFormPage() {
       </Section>
 
       {formError && (
-        <div className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{formError}</div>
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{formError}</div>
       )}
 
       <div className="flex justify-end gap-3 border-t border-gray-200 pt-5">
         <button
           onClick={() => navigate('/admin/products')}
-          className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+          className="adm-btn-secondary"
         >
           Batal
         </button>
         <button
           onClick={handleSave}
           disabled={busy}
-          className="rounded-md bg-gray-900 px-5 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+          className="adm-btn-primary"
         >
           {busy ? 'Menyimpan…' : 'Simpan'}
         </button>
@@ -575,8 +575,8 @@ export default function ProductFormPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
-      <h2 className="mb-4 border-b border-gray-100 pb-2 text-sm font-semibold tracking-wide text-gray-500 uppercase">
+    <section className="adm-card p-5">
+      <h2 className="adm-card-title mb-4 border-b border-gray-100 pb-2 uppercase tracking-wide">
         {title}
       </h2>
       {children}

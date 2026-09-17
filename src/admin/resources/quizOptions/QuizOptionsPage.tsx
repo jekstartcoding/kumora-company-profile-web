@@ -1,6 +1,7 @@
 // Fase 8.1 — Quiz Options: list dikelompokkan per step_id (grouped table) supaya
 // admin melihat semua opsi untuk satu step quiz sekaligus; form create/edit sederhana.
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { apiGet, apiSend, apiErrorMessage } from '../../lib/apiClient';
 
 interface QuizOptionRow {
@@ -101,120 +102,129 @@ export default function QuizOptionsPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">Quiz Options</h1>
-        <button
-          onClick={openCreate}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-        >
-          + New Option
-        </button>
-      </div>
-
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {loading && <p className="text-sm text-gray-400">Memuat…</p>}
+      {error && (
+        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>
+      )}
+      {loading && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="adm-card animate-pulse p-5">
+              <div className="h-4 w-32 rounded bg-gray-200" />
+              <div className="mt-4 space-y-2">
+                <div className="h-3 w-full rounded bg-gray-100" />
+                <div className="h-3 w-2/3 rounded bg-gray-100" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {!loading && grouped.length === 0 && (
-        <p className="rounded-lg border border-dashed border-gray-300 p-8 text-center text-sm text-gray-400">
+        <div className="adm-card p-10 text-center text-sm text-gray-400">
           Belum ada quiz option.
-        </p>
+        </div>
       )}
 
       <div className="space-y-5">
         {grouped.map(([stepId, options]) => (
-          <div key={stepId} className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-            <div className="border-b border-gray-100 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700">
-              Step: <code className="text-xs">{stepId}</code>
-              <span className="ml-2 text-xs text-gray-400">({options.length} opsi)</span>
+          <div key={stepId} className="adm-card overflow-hidden">
+            <div className="adm-card-header">
+              <span className="adm-card-title">
+                Step: <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs">{stepId}</code>
+              </span>
+              <span className="adm-badge-gray">{options.length} opsi</span>
             </div>
-            <table className="min-w-full divide-y divide-gray-100 text-sm">
-              <tbody className="divide-y divide-gray-100">
-                {options.map((row) => (
-                  <tr key={row.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-2.5 text-gray-500">{row.order_index}</td>
-                    <td className="px-4 py-2.5">
-                      <code className="text-xs text-gray-500">{row.option_id}</code>
-                    </td>
-                    <td className="px-4 py-2.5 font-medium text-gray-800">{row.label}</td>
-                    <td className="px-4 py-2.5 text-right whitespace-nowrap">
-                      <button
-                        onClick={() => openEdit(row)}
-                        className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(row)}
-                        className="ml-2 rounded border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <tbody>
+                  {options.map((row) => (
+                    <tr key={row.id}>
+                      <td className="w-12 text-gray-400">{row.order_index}</td>
+                      <td className="w-40">
+                        <code className="text-xs text-gray-500">{row.option_id}</code>
+                      </td>
+                      <td className="font-medium">{row.label}</td>
+                      <td className="whitespace-nowrap text-right">
+                        <button onClick={() => openEdit(row)} className="adm-btn-ghost px-2 py-1.5" title="Edit">
+                          <Pencil className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(row)}
+                          className="adm-btn-ghost px-2 py-1.5 text-red-600 hover:bg-red-50 hover:text-red-700"
+                          title="Hapus"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         ))}
       </div>
 
+      {/* FAB tambah — ala Filament toolbar action */}
+      <button
+        type="button"
+        onClick={openCreate}
+        className="adm-btn-primary fixed bottom-6 right-6 h-12 w-12 !rounded-full p-0 shadow-lg"
+        title="Tambah quiz option"
+      >
+        <Plus className="h-5 w-5" />
+      </button>
+
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-            <h2 className="text-lg font-semibold text-gray-900">
-              {form.id ? 'Edit Option' : 'New Option'}
-            </h2>
-            <div className="mt-4 space-y-3">
-              <label className="block text-sm">
-                <span className="mb-1 block text-gray-600">step_id *</span>
+        <div className="adm-modal-overlay" onClick={() => setShowForm(false)}>
+          <div className="adm-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="adm-modal-header">
+              <h2 className="adm-modal-title">{form.id ? 'Edit Option' : 'New Option'}</h2>
+            </div>
+            <div className="adm-modal-body space-y-4">
+              <div>
+                <label className="adm-label">step_id *</label>
                 <input
                   value={form.step_id}
                   onChange={(e) => setForm({ ...form, step_id: e.target.value })}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="adm-input"
                   placeholder="sleep_position"
                 />
-              </label>
-              <label className="block text-sm">
-                <span className="mb-1 block text-gray-600">option_id *</span>
+              </div>
+              <div>
+                <label className="adm-label">option_id *</label>
                 <input
                   value={form.option_id}
                   onChange={(e) => setForm({ ...form, option_id: e.target.value })}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="adm-input"
                   placeholder="menyamping"
                 />
-              </label>
-              <label className="block text-sm">
-                <span className="mb-1 block text-gray-600">label *</span>
+              </div>
+              <div>
+                <label className="adm-label">label *</label>
                 <input
                   value={form.label}
                   onChange={(e) => setForm({ ...form, label: e.target.value })}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="adm-input"
                   placeholder="Menyamping"
                 />
-              </label>
-              <label className="block text-sm">
-                <span className="mb-1 block text-gray-600">order_index</span>
+              </div>
+              <div>
+                <label className="adm-label">order_index</label>
                 <input
                   type="number"
                   value={form.order_index}
                   onChange={(e) => setForm({ ...form, order_index: Number(e.target.value) })}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="adm-input"
                 />
-              </label>
+              </div>
+              {formError && <p className="adm-field-error">{formError}</p>}
             </div>
-            {formError && <p className="mt-3 text-xs text-red-600">{formError}</p>}
-            <div className="mt-5 flex justify-end gap-2">
-              <button
-                onClick={() => setShowForm(false)}
-                className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-              >
+            <div className="adm-modal-footer">
+              <button onClick={() => setShowForm(false)} className="adm-btn-secondary">
                 Batal
               </button>
-              <button
-                onClick={handleSave}
-                disabled={busy}
-                className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
-              >
+              <button onClick={handleSave} disabled={busy} className="adm-btn-primary">
                 {busy ? 'Menyimpan…' : 'Simpan'}
               </button>
             </div>

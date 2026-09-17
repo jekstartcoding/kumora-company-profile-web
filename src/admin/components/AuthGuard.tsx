@@ -1,4 +1,4 @@
-// Fase 6.4 — Auth guard: route admin dibungkus guard yang cek sesi Supabase Auth.
+// AuthGuard: route admin dibungkus guard yang cek sesi Supabase Auth.
 // Belum login → redirect ke /admin/login. Sesi sedang dicek → tampilkan loading.
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -23,7 +23,8 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
 
   if (checking) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 text-sm text-gray-500">
+      <div className="flex min-h-screen items-center justify-center bg-charcoal text-sm text-gray-300">
+        <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-gray-500 border-t-white" />
         Memeriksa sesi…
       </div>
     );

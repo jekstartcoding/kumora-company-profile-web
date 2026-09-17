@@ -4,6 +4,7 @@
 // submit (mirror validasi backend FALLBACK_REQUIRED). List menampilkan kombinasi
 // dalam bentuk terbaca manusia, bukan JSON mentah.
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { apiGet, apiSend, apiErrorMessage } from '../../lib/apiClient';
 
 interface QuizOptionRow {
@@ -178,79 +179,93 @@ export default function QuizMappingsPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">Quiz Mappings</h1>
-        <button
-          onClick={openCreate}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-        >
-          + New Mapping
-        </button>
-      </div>
-
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {loading && <p className="text-sm text-gray-400">Memuat…</p>}
+      {error && (
+        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>
+      )}
+      {loading && (
+        <div className="adm-card animate-pulse p-5">
+          <div className="h-4 w-40 rounded bg-gray-200" />
+          <div className="mt-4 space-y-2">
+            <div className="h-3 w-full rounded bg-gray-100" />
+            <div className="h-3 w-3/4 rounded bg-gray-100" />
+          </div>
+        </div>
+      )}
       {!loading && rows.length === 0 && (
-        <p className="rounded-lg border border-dashed border-gray-300 p-8 text-center text-sm text-gray-400">
+        <div className="adm-card p-10 text-center text-sm text-gray-400">
           Belum ada mapping. Quiz di frontend butuh minimal 1 fallback — buat dulu.
-        </p>
+        </div>
       )}
 
-      <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-        <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-3 text-left font-medium text-gray-500">Kombinasi Jawaban</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-500">Produk</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-500">Fallback</th>
-              <th className="px-4 py-3 text-right font-medium text-gray-500">Aksi</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {rows.map((row) => (
-              <tr key={row.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-gray-800">
-                  {humanizeCombination(row.answer_combination, optionsByStep)}
-                </td>
-                <td className="px-4 py-3 text-gray-700">{row.products?.name ?? '—'}</td>
-                <td className="px-4 py-3">
-                  {row.is_fallback ? (
-                    <span className="rounded bg-amber-100 px-2 py-0.5 text-xs text-amber-800">fallback</span>
-                  ) : (
-                    <span className="text-gray-400">—</span>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-right whitespace-nowrap">
-                  <button
-                    onClick={() => openEdit(row)}
-                    className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(row)}
-                    className="ml-2 rounded border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {!loading && (
+        <div className="adm-card">
+          <div className="adm-card-header">
+            <span className="adm-card-title">Semua Mapping</span>
+            <span className="adm-badge-warning">{fallbackCount} fallback</span>
+          </div>
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead>
+                <tr>
+                  <th>Kombinasi Jawaban</th>
+                  <th>Produk</th>
+                  <th>Fallback</th>
+                  <th className="text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.id}>
+                    <td className="font-medium">{humanizeCombination(row.answer_combination, optionsByStep)}</td>
+                    <td>{row.products?.name ?? '—'}</td>
+                    <td>
+                      {row.is_fallback ? (
+                        <span className="adm-badge-warning">fallback</span>
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
+                    </td>
+                    <td className="whitespace-nowrap text-right">
+                      <button onClick={() => openEdit(row)} className="adm-btn-ghost px-2 py-1.5" title="Edit">
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(row)}
+                        className="adm-btn-ghost px-2 py-1.5 text-red-600 hover:bg-red-50 hover:text-red-700"
+                        title="Hapus"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* FAB tambah */}
+      <button
+        type="button"
+        onClick={openCreate}
+        className="adm-btn-primary fixed bottom-6 right-6 h-12 w-12 !rounded-full p-0 shadow-lg"
+        title="Tambah mapping"
+      >
+        <Plus className="h-5 w-5" />
+      </button>
 
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
-            <h2 className="text-lg font-semibold text-gray-900">
-              {form.id ? 'Edit Mapping' : 'New Mapping'}
-            </h2>
+        <div className="adm-modal-overlay" onClick={() => setShowForm(false)}>
+          <div className="adm-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="adm-modal-header">
+              <h2 className="adm-modal-title">{form.id ? 'Edit Mapping' : 'New Mapping'}</h2>
+            </div>
 
-            <div className="mt-4 space-y-3">
+            <div className="adm-modal-body space-y-4">
               {steps.map(([stepId, opts]) => (
-                <label key={stepId} className="block text-sm">
-                  <span className="mb-1 block text-gray-600">{stepId}</span>
+                <div key={stepId}>
+                  <label className="adm-label">{stepId}</label>
                   <select
                     value={form.combination[stepId] ?? ''}
                     onChange={(e) =>
@@ -259,7 +274,7 @@ export default function QuizMappingsPage() {
                         combination: { ...f.combination, [stepId]: e.target.value },
                       }))
                     }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2"
+                    className="adm-input"
                   >
                     <option value="">— (tidak dibatasi) —</option>
                     {opts.map((o) => (
@@ -268,15 +283,15 @@ export default function QuizMappingsPage() {
                       </option>
                     ))}
                   </select>
-                </label>
+                </div>
               ))}
 
-              <label className="block text-sm">
-                <span className="mb-1 block text-gray-600">Produk hasil</span>
+              <div>
+                <label className="adm-label">Produk hasil</label>
                 <select
                   value={form.product_id}
                   onChange={(e) => setForm((f) => ({ ...f, product_id: e.target.value }))}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="adm-input"
                 >
                   <option value="">— tanpa produk —</option>
                   {products.map((p) => (
@@ -285,33 +300,26 @@ export default function QuizMappingsPage() {
                     </option>
                   ))}
                 </select>
-              </label>
+              </div>
 
-              <label className="flex items-center gap-2 text-sm text-gray-700">
+              <label className="inline-flex cursor-pointer items-center gap-2.5 text-sm text-charcoal">
                 <input
                   type="checkbox"
                   checked={form.is_fallback}
                   onChange={(e) => setForm((f) => ({ ...f, is_fallback: e.target.checked }))}
-                  className="h-4 w-4 rounded border-gray-300"
+                  className="h-4 w-4 rounded border-gray-300 accent-plum"
                 />
                 Jadikan fallback (dipakai kalau tidak ada mapping yang cocok)
               </label>
+
+              {formError && <p className="adm-field-error">{formError}</p>}
             </div>
 
-            {formError && <p className="mt-3 text-xs text-red-600">{formError}</p>}
-
-            <div className="mt-5 flex justify-end gap-2">
-              <button
-                onClick={() => setShowForm(false)}
-                className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-              >
+            <div className="adm-modal-footer">
+              <button onClick={() => setShowForm(false)} className="adm-btn-secondary">
                 Batal
               </button>
-              <button
-                onClick={handleSave}
-                disabled={busy}
-                className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
-              >
+              <button onClick={handleSave} disabled={busy} className="adm-btn-primary">
                 {busy ? 'Menyimpan…' : 'Simpan'}
               </button>
             </div>

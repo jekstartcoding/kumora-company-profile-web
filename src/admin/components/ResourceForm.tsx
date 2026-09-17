@@ -1,6 +1,7 @@
-// Fase 6.2 — ResourceForm generik, gaya Filament form builder: deklarasikan schema
-// field, UI-nya terbentuk otomatis. Field 'image-upload' di-render oleh ImageUploader
-// (dikomposisi oleh resource yang butuh, bukan bagian form generik).
+// ResourceForm generik ala Filament form builder: deklarasikan schema field,
+// UI-nya terbentuk otomatis (text/number/select/textarea/toggle/repeater).
+// Field 'image-upload' di-render oleh ImageUploader (dikomposisi oleh resource
+// yang butuh, bukan bagian form generik).
 import type { FormFieldConfig } from '../resources/types';
 
 interface Props {
@@ -32,31 +33,31 @@ function RepeaterField({
   return (
     <div className="space-y-3">
       {rows.map((row, idx) => (
-        <div key={idx} className="rounded-md border border-gray-200 bg-gray-50 p-3">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-medium text-gray-500">
+        <div key={idx} className="rounded-lg border border-gray-200 bg-gray-50/70 p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               {field.label} #{idx + 1}
             </span>
             <button
               type="button"
               onClick={() => removeRow(idx)}
-              className="text-xs text-red-600 hover:text-red-700"
+              className="text-xs font-medium text-red-600 hover:text-red-700"
             >
               Hapus baris
             </button>
           </div>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {subFields.map((sub) => (
-              <label key={sub.key} className="block text-sm">
-                <span className="mb-1 block text-gray-600">
+              <div key={sub.key}>
+                <label className="adm-label">
                   {sub.label}
                   {sub.required ? ' *' : ''}
-                </span>
+                </label>
                 {sub.type === 'select' ? (
                   <select
                     value={row[sub.key] ?? ''}
                     onChange={(e) => updateRow(idx, sub.key, e.target.value)}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2"
+                    className="adm-input"
                   >
                     <option value="">— pilih —</option>
                     {(sub.options ?? []).map((o) => (
@@ -72,10 +73,10 @@ function RepeaterField({
                     onChange={(e) =>
                       updateRow(idx, sub.key, sub.type === 'number' ? Number(e.target.value) : e.target.value)
                     }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2"
+                    className="adm-input"
                   />
                 )}
-              </label>
+              </div>
             ))}
           </div>
         </div>
@@ -83,11 +84,11 @@ function RepeaterField({
       <button
         type="button"
         onClick={addRow}
-        className="rounded-md border border-dashed border-gray-300 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+        className="w-full rounded-lg border border-dashed border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-plum hover:text-plum"
       >
         + Tambah {field.label}
       </button>
-      {errors?.[field.key] && <p className="text-xs text-red-600">{errors[field.key]}</p>}
+      {errors?.[field.key] && <p className="adm-field-error">{errors[field.key]}</p>}
     </div>
   );
 }
@@ -102,17 +103,15 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
         }
 
         const labelEl = (
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="adm-label">
             {field.label}
             {field.required ? ' *' : ''}
           </label>
         );
         const errorEl = errors?.[field.key] ? (
-          <p className="mt-1 text-xs text-red-600">{errors[field.key]}</p>
+          <p className="adm-field-error">{errors[field.key]}</p>
         ) : null;
-        const helpEl = field.helpText ? (
-          <p className="mt-1 text-xs text-gray-400">{field.helpText}</p>
-        ) : null;
+        const helpEl = field.helpText ? <p className="adm-hint">{field.helpText}</p> : null;
 
         if (field.type === 'repeater') {
           return (
@@ -136,7 +135,7 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
                 placeholder={field.placeholder}
                 value={values[field.key] ?? ''}
                 onChange={(e) => onChange(field.key, e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                className="adm-input"
               />
             )}
             {field.type === 'text' && (
@@ -145,7 +144,7 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
                 placeholder={field.placeholder}
                 value={values[field.key] ?? ''}
                 onChange={(e) => onChange(field.key, e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                className="adm-input"
               />
             )}
             {field.type === 'number' && (
@@ -156,14 +155,14 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
                 placeholder={field.placeholder}
                 value={values[field.key] ?? ''}
                 onChange={(e) => onChange(field.key, e.target.value === '' ? '' : Number(e.target.value))}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                className="adm-input"
               />
             )}
             {field.type === 'select' && (
               <select
                 value={values[field.key] ?? ''}
                 onChange={(e) => onChange(field.key, e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                className="adm-input"
               >
                 <option value="">— pilih —</option>
                 {(field.options ?? []).map((o) => (
@@ -174,12 +173,12 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
               </select>
             )}
             {field.type === 'toggle' && (
-              <label className="flex items-center gap-2 text-sm text-gray-700">
+              <label className="inline-flex cursor-pointer items-center gap-2.5 text-sm text-charcoal">
                 <input
                   type="checkbox"
                   checked={values[field.key] === true}
                   onChange={(e) => onChange(field.key, e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300"
+                  className="h-4 w-4 rounded border-gray-300 accent-plum"
                 />
                 {field.helpText ?? 'Aktifkan'}
               </label>
