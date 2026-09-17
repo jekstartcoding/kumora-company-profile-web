@@ -7,8 +7,11 @@
 .adm-shell {
     @apply flex min-h-screen bg-gray-100;
   }
+  /* Tanpa `flex` di sini: display dikontrol markup (`hidden lg:flex` di desktop,
+     drawer fixed di mobile) supaya utility hidden tidak tertimpa saat CSS ini
+     diimpor setelah index.css. */
   .adm-sidebar {
-    @apply flex h-full w-64 flex-col bg-charcoal text-gray-100 shadow-xl;
+    @apply h-full w-64 shrink-0 flex-col bg-charcoal text-gray-100 shadow-xl;
   }
   .adm-sidebar-brand {
     @apply flex h-16 items-center gap-2.5 border-b border-white/10 px-5;

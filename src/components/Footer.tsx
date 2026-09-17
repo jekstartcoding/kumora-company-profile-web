@@ -17,21 +17,23 @@ const companyLinks = [
 export default function Footer() {
   return (
     <footer className="bg-charcoal text-ivory">
-      <div className="container-wide py-16 md:py-20">
-        <div className="grid gap-10 md:grid-cols-2 md:gap-8 lg:grid-cols-4 lg:gap-8">
-          <div className="lg:col-span-1">
+      <div className="container-wide py-12 md:py-20">
+        {/* Mobile: link list 2 kolom + sosial inline supaya footer ringkas; */}
+        {/* md ke atas: layout 2 kolom, lg: 4 kolom seperti semula. */}
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 md:gap-8 lg:grid-cols-4">
+          <div className="col-span-2 lg:col-span-1">
             <div className="inline-flex rounded-full bg-ivory px-4 py-2">
               <img src="/kumora-logo-with-text.png" alt="Kumora" className="h-7 w-auto object-contain" />
             </div>
-            <p className="mt-3 text-sm text-ivory/70">Kenyamanan untuk hidup yang lebih baik.</p>
-            <p className="mt-6 max-w-xs text-sm leading-relaxed text-ivory/60">
+            <p className="mt-2 text-sm text-ivory/70">Kenyamanan untuk hidup yang lebih baik.</p>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-ivory/60 md:mt-6">
               Perlengkapan tidur dan kamar yang dirancang dengan penuh perhatian untuk kenyamanan setiap hari.
             </p>
           </div>
 
           <div>
             <h3 className="eyebrow text-ivory/50">Jelajahi</h3>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-4 space-y-2.5 md:mt-5 md:space-y-3">
               {exploreLinks.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -47,7 +49,7 @@ export default function Footer() {
 
           <div>
             <h3 className="eyebrow text-ivory/50">Perusahaan</h3>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-4 space-y-2.5 md:mt-5 md:space-y-3">
               {companyLinks.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -61,9 +63,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
+          {/* Sosial media: baris inline di mobile (ringkas), stack di lg */}
+          <div className="col-span-2 lg:col-span-1">
             <h3 className="eyebrow text-ivory/50">Terhubung</h3>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-3 md:mt-5 lg:flex-col lg:space-y-3 lg:gap-x-0 lg:gap-y-0">
               <li>
                 <a
                   href={generateWhatsAppURL({
@@ -109,7 +112,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-ivory/10 pt-8 sm:flex-row sm:items-center">
+        <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-ivory/10 pt-6 sm:flex-row sm:items-center md:mt-14 md:pt-8">
           <p className="text-xs text-ivory/50">© 2026 Kumora. Hak cipta dilindungi.</p>
           <p className="text-xs text-ivory/40">Situs prototipe — data merek fiktif</p>
         </div>
