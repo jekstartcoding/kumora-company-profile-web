@@ -1,6 +1,6 @@
 import { MessageCircle, Mail, MapPin, Clock, Instagram, Music2, Facebook } from 'lucide-react';
 import SectionHeading from '@/components/SectionHeading';
-import { generateWhatsAppURL } from '@/data/products';
+import { generateWhatsAppURL } from '@/data/content';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useMotionPreference';
 import { revealVariants, staggerContainer } from '@/lib/animations';

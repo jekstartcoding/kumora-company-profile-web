@@ -3,11 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import SectionHeading from '@/components/SectionHeading';
-import {
-  products,
-  filterProducts,
-  type ProductCategory,
-} from '@/data/products';
+import { useProducts, filterProducts, type ProductCategory } from '@/data/products';
 
 const categoryOptions: (ProductCategory | 'Semua')[] = [
   'Semua',
@@ -33,6 +29,7 @@ export default function ProductsPage() {
     categoryParam && categoryParam in categoryUrlMap ? categoryUrlMap[categoryParam] : 'Semua'
   );
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const { products, loading, error } = useProducts();
 
   useEffect(() => {
     if (categoryParam && categoryParam in categoryUrlMap) {
@@ -71,7 +68,7 @@ export default function ProductsPage() {
         .toLowerCase()
         .includes(query)
     );
-  }, [category, search]);
+  }, [products, category, search]);
 
   const hasActiveFilters = search !== '' || category !== 'Semua';
 
@@ -153,7 +150,7 @@ export default function ProductsPage() {
           {/* Results count */}
           <div className="mt-6 flex items-center justify-between">
             <p className="text-sm text-charcoal-muted">
-              {filtered.length} {filtered.length === 1 ? 'produk' : 'produk'}
+              {loading ? 'Memuat…' : `${filtered.length} ${filtered.length === 1 ? 'produk' : 'produk'}`}
             </p>
             {hasActiveFilters && (
               <button
@@ -167,7 +164,18 @@ export default function ProductsPage() {
           </div>
 
           {/* Grid */}
-          {filtered.length > 0 ? (
+          {error ? (
+            <div className="mt-16 flex flex-col items-center justify-center rounded-2xl border border-rose/40 bg-blush/30 px-6 py-16 text-center">
+              <h3 className="font-serif text-2xl text-charcoal">Gagal memuat produk</h3>
+              <p className="mt-3 max-w-sm text-sm text-charcoal-muted">
+                Terjadi kendala saat mengambil data. Coba muat ulang halaman.
+              </p>
+            </div>
+          ) : loading ? (
+            <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, i) => <ProductCardSkeleton key={i} />)}
+            </div>
+          ) : filtered.length > 0 ? (
             <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
               {filtered.map((product, i) => (
                 <ProductCard key={product.id} product={product} index={i} />
@@ -187,5 +195,15 @@ export default function ProductsPage() {
         </div>
       </section>
     </>
+  );
+}
+
+function ProductCardSkeleton() {
+  return (
+    <div className="animate-pulse" aria-hidden="true">
+      <div className="aspect-square w-full rounded-2xl bg-mist" />
+      <div className="mt-4 h-4 w-3/4 rounded bg-mist" />
+      <div className="mt-2 h-3 w-1/2 rounded bg-mist" />
+    </div>
   );
 }

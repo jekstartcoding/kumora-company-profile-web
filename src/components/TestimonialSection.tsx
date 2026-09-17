@@ -1,5 +1,5 @@
 import { Star } from 'lucide-react';
-import { TESTIMONIALS } from '@/data/products';
+import { TESTIMONIALS } from '@/data/content';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useMotionPreference';
 import { revealVariants, staggerContainer } from '@/lib/animations';

@@ -6,7 +6,8 @@ import { motion } from 'framer-motion';
 import SectionHeading from '@/components/SectionHeading';
 import CategorySection from '@/components/CategorySection';
 import TestimonialSection from '@/components/TestimonialSection';
-import { products, generateWhatsAppURL } from '@/data/products';
+import { useProducts } from '@/data/products';
+import { generateWhatsAppURL } from '@/data/content';
 import { revealVariants, staggerContainer } from '@/lib/animations';
 import { useViewportAmount } from '@/hooks/useViewportAmount';
 
@@ -42,6 +43,7 @@ const principles = [
 ];
 
 function FeaturedSection() {
+  const { products, loading, error } = useProducts();
   const featured = products.slice(0, 4);
   const viewportAmount = useViewportAmount();
 
@@ -54,17 +56,21 @@ function FeaturedSection() {
           description="Temukan perlengkapan sehari-hari yang dirancang untuk menjadikan kamar Anda lebih nyaman."
         />
 
-        <motion.div
-          className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8"
-          variants={staggerContainer(0.06)}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: viewportAmount }}
-        >
-          {featured.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
-          ))}
-        </motion.div>
+        {error ? (
+          <p className="mt-12 text-center text-sm text-charcoal-muted">Gagal memuat produk — coba muat ulang halaman.</p>
+        ) : (
+          <motion.div
+            className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8"
+            variants={staggerContainer(0.06)}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: viewportAmount }}
+          >
+            {loading
+              ? Array.from({ length: 4 }).map((_, i) => <ProductCardSkeleton key={i} />)
+              : featured.map((product, i) => <ProductCard key={product.id} product={product} index={i} />)}
+          </motion.div>
+        )}
 
         <div className="mt-12 flex justify-center">
           <Link to="/shop/pillows" className="btn-secondary">
@@ -74,6 +80,16 @@ function FeaturedSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ProductCardSkeleton() {
+  return (
+    <div className="animate-pulse" aria-hidden="true">
+      <div className="aspect-square w-full rounded-2xl bg-mist" />
+      <div className="mt-4 h-4 w-3/4 rounded bg-mist" />
+      <div className="mt-2 h-3 w-1/2 rounded bg-mist" />
+    </div>
   );
 }
 

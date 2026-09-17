@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { CATEGORIES, CATEGORY_LABELS } from '@/data/products';
+import { CATEGORIES } from '@/data/content';
+import { CATEGORY_LABELS } from '@/data/products';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useMotionPreference';
 import { revealVariants, staggerContainer } from '@/lib/animations';

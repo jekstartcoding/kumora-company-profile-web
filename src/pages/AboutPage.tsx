@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import BrandMark from '@/components/BrandMark';
 import SectionHeading from '@/components/SectionHeading';
-import { TIMELINE, CORE_VALUES } from '@/data/products';
+import { TIMELINE, CORE_VALUES } from '@/data/content';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useMotionPreference';
 import { revealVariants, staggerContainer } from '@/lib/animations';

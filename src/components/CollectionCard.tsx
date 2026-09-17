@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useMotionPreference';
-import type { Product } from '@/data/products';
+import type { Product } from '@/data/types';
 import { revealVariants } from '@/lib/animations';
 
 interface CollectionCardProps {

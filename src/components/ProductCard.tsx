@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useMotionPreference';
-import type { Product } from '@/data/products';
-import { formatIDR, generateWhatsAppURL } from '@/data/products';
+import type { Product } from '@/data/types';
+import { formatIDR, generateWhatsAppURL } from '@/data/content';
 import { revealVariants } from '@/lib/animations';
 
 interface ProductCardProps {

@@ -1,6 +1,6 @@
 import Accordion from '@/components/Accordion';
 import SectionHeading from '@/components/SectionHeading';
-import { FAQS, generateWhatsAppURL } from '@/data/products';
+import { FAQS, generateWhatsAppURL } from '@/data/content';
 import { MessageCircle } from 'lucide-react';
 
 export default function FAQPage() {

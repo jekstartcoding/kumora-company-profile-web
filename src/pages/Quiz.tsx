@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useMotionPreference';
 import { Link, useNavigate } from 'react-router-dom';
-import { matchQuizToProduct, QUIZ_STEPS, type QuizAnswer, type QuizStepDefinition } from '@/data/quiz';
+import { useQuizSteps, matchQuizToProduct, type QuizAnswer, type QuizStepDefinition } from '@/data/quiz';
 import { quizStepVariants, revealVariants, staggerContainer } from '@/lib/animations';
 
 interface QuizStepProps {
@@ -82,8 +82,10 @@ function QuizStep({ step, stepNumber, totalSteps, onAnswer, onSkip, onBack }: Qu
 }
 
 export default function QuizPage() {
+  const { steps: QUIZ_STEPS, loading, error } = useQuizSteps();
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswer[]>([]);
+  const [matching, setMatching] = useState(false);
   const navigate = useNavigate();
   const step = QUIZ_STEPS[stepIndex];
 
@@ -95,8 +97,19 @@ export default function QuizPage() {
     setAnswers(nextAnswers);
 
     if (stepIndex === QUIZ_STEPS.length - 1) {
-      const matchedProduct = matchQuizToProduct(nextAnswers);
-      navigate(`/product/${matchedProduct.slug}?from=quiz`);
+      setMatching(true);
+      matchQuizToProduct(nextAnswers)
+        .then((matchedProduct) => {
+          if (matchedProduct) {
+            navigate(`/product/${matchedProduct.slug}?from=quiz`);
+          } else {
+            // Fallback mapping tidak menemukan apa pun (tak seharusnya terjadi —
+            // DB wajib punya 1 fallback): arahkan ke koleksi.
+            navigate('/shop/pillows');
+          }
+        })
+        .catch(() => navigate('/shop/pillows'))
+        .finally(() => setMatching(false));
       return;
     }
 
@@ -106,6 +119,36 @@ export default function QuizPage() {
   const handleBack = () => {
     setStepIndex((current) => Math.max(0, current - 1));
   };
+
+  if (loading) {
+    return (
+      <main className="bg-ivory px-5 pb-32 pb-nav-safe pt-16 sm:px-8 md:pt-20">
+        <div className="mx-auto max-w-2xl animate-pulse" aria-hidden="true">
+          <div className="h-3 w-40 rounded bg-mist" />
+          <div className="mt-8 h-10 w-3/4 rounded bg-mist" />
+          <div className="mt-10 space-y-4">
+            <div className="h-20 rounded-2xl bg-mist" />
+            <div className="h-20 rounded-2xl bg-mist" />
+            <div className="h-20 rounded-2xl bg-mist" />
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (error || !step) {
+    return (
+      <main className="flex min-h-[60vh] items-center justify-center bg-ivory px-5 pt-16">
+        <div className="text-center">
+          <h1 className="font-serif text-3xl text-charcoal">Gagal memuat quiz</h1>
+          <p className="mt-3 text-charcoal-muted">Coba muat ulang halaman, atau jelajahi koleksi kami.</p>
+          <Link to="/shop/pillows" className="btn-primary mt-6">
+            Lihat Koleksi
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="bg-ivory px-5 pb-32 pb-nav-safe pt-16 sm:px-8 md:pt-20">

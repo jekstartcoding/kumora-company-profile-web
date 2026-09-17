@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MessageCircle, Instagram, Facebook, Music2 } from 'lucide-react';
-import { generateWhatsAppURL } from '@/data/products';
+import { generateWhatsAppURL } from '@/data/content';
 
 const exploreLinks = [
   { label: 'Pillows', to: '/shop/pillows' },

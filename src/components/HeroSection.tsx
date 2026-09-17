@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import BrandMark from '@/components/BrandMark';
-import { generateWhatsAppURL } from '@/data/products';
+import { generateWhatsAppURL } from '@/data/content';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useMotionPreference';
 import { staggerContainer } from '@/lib/animations';

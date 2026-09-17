@@ -1,5 +1,5 @@
 import { MessageCircle } from 'lucide-react';
-import { generateWhatsAppURL } from '@/data/products';
+import { generateWhatsAppURL } from '@/data/content';
 
 export default function WhatsAppButton() {
   return (

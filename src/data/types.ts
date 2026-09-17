@@ -1,4 +1,6 @@
 // ===== TIPE KATEGORI PRODUK BARU (3 kategori) =====
+// Fase 9: sumber data produk kini Supabase (src/lib/productApi.ts). Bentuk tipe ini
+// TIDAK berubah (plan 9.2), kecuali: id → string (UUID), specifications dihapus.
 
 export type ProductCategory = "pillows" | "bolsters" | "beds";
 
@@ -36,16 +38,14 @@ export interface ProductSensorySpec {
   fillWeightEquivalent: string;       // contoh: "setara 2kg kapas premium"
 }
 
-export interface ProductSpecification {
-  label: string;
-  value: string;
-}
+// Fase 9: ProductSpecification dihapus — field `specifications` tidak pernah dipakai
+// komponen UI mana pun dan tidak punya kolom di database (schema Fase 1 terkunci).
 
 // ===== INTERFACE PRODUK FINAL =====
 
 export interface Product {
   // Field yang dipertahankan
-  id: number;
+  id: string; // Fase 9: UUID dari database (sebelumnya number saat data statis)
   slug: string;
   name: string;
   category: ProductCategory;
@@ -74,9 +74,6 @@ export interface Product {
   brandStoryLine: string;               // BARU — satu baris brand story, konsisten di semua PDP
   lifestyleImages: string[];            // BARU — dipisah dari texture
   textureImages: string[];              // BARU — wajib minimal 1, "menggantikan sentuhan"
-
-  // Spesifikasi teknis yang dipertahankan
-  specifications: ProductSpecification[];
 
   // Review yang diperluas
   reviews: ProductReview[];

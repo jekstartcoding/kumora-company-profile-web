@@ -7,14 +7,13 @@ import Breadcrumb from '@/components/Breadcrumb';
 import GiftToggle, { type PurchaseContext } from '@/components/GiftToggle';
 import ProductCard from '@/components/ProductCard';
 import Rating from '@/components/Rating';
+import { formatIDR, generateWhatsAppURL } from '@/data/content';
 import {
-  formatIDR,
-  generateWhatsAppURL,
   getProductBySlug,
   getRelatedProducts,
   type Product,
-  type ProductVariant,
 } from '@/data/products';
+import type { ProductVariant } from '@/data/types';
 import { entryDecelerateVariants } from '@/lib/animations';
 
 function ProductTextureGallery({ product }: { product: Product }) {
@@ -187,17 +186,77 @@ export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
   const shouldReduceMotion = useReducedMotion();
-  const product = slug ? getProductBySlug(slug) : undefined;
   const fromQuiz = searchParams.get('from') === 'quiz';
   const [activeImage, setActiveImage] = useState(0);
   const [purchaseContext, setPurchaseContext] = useState<PurchaseContext>('self');
   const [selectedVariantId, setSelectedVariantId] = useState('');
+  // Fase 9 — produk kini async dari Supabase (bukan lagi lookup array statis).
+  const [product, setProduct] = useState<Product | undefined>(undefined);
+  const [related, setRelated] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setActiveImage(0);
     setPurchaseContext('self');
     setSelectedVariantId('');
   }, [slug]);
+
+  // Fase 9.3 — fetch produk + related dengan loading & error state.
+  useEffect(() => {
+    let alive = true;
+    if (!slug) {
+      setProduct(undefined);
+      setRelated([]);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    getProductBySlug(slug)
+      .then((p) => {
+        if (!alive) return;
+        setProduct(p);
+        setLoading(false);
+        if (p) {
+          getRelatedProducts(p)
+            .then((r) => {
+              if (alive) setRelated(r);
+            })
+            .catch(() => {
+              if (alive) setRelated([]);
+            });
+        } else {
+          setRelated([]);
+        }
+      })
+      .catch((e: unknown) => {
+        if (!alive) return;
+        setError(e instanceof Error ? e.message : 'Gagal memuat produk');
+        setLoading(false);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [slug]);
+
+  if (loading) {
+    return <ProductDetailSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <section className="flex min-h-[60vh] items-center justify-center bg-ivory pt-20">
+        <div className="text-center">
+          <h1 className="font-serif text-3xl text-charcoal">Gagal memuat produk</h1>
+          <p className="mt-3 text-charcoal-muted">Terjadi kendala saat mengambil data. Coba muat ulang halaman.</p>
+          <Link to="/shop/pillows" className="btn-primary mt-6">
+            Kembali ke Produk
+          </Link>
+        </div>
+      </section>
+    );
+  }
 
   if (!product) {
     return (
@@ -230,7 +289,6 @@ export default function ProductDetailPage() {
   }
   const selectedVariant =
     product.variants.find((variant) => variant.id === selectedVariantId) ?? defaultVariant;
-  const related = getRelatedProducts(product);
 
   return (
     <>
@@ -385,5 +443,38 @@ export default function ProductDetailPage() {
         </section>
       )}
     </>
+  );
+}
+
+function ProductDetailSkeleton() {
+  return (
+    <section className="bg-ivory pb-40 pb-nav-cta-safe pt-8 md:pb-36" aria-hidden="true">
+      <div className="container-wide">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="animate-pulse">
+            <div className="aspect-square w-full rounded-3xl bg-sand/60" />
+            <div className="mt-4 grid grid-cols-4 gap-3">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="aspect-square rounded-xl bg-mist" />
+              ))}
+            </div>
+          </div>
+          <div className="animate-pulse lg:pt-4">
+            <div className="h-3 w-24 rounded bg-mist" />
+            <div className="mt-4 h-9 w-3/4 rounded bg-mist" />
+            <div className="mt-4 h-4 w-1/2 rounded bg-mist" />
+            <div className="mt-6 h-7 w-32 rounded bg-mist" />
+            <div className="mt-5 space-y-2">
+              <div className="h-3 w-full rounded bg-mist" />
+              <div className="h-3 w-5/6 rounded bg-mist" />
+            </div>
+            <div className="mt-8 space-y-2">
+              <div className="h-12 w-full rounded-xl bg-mist" />
+              <div className="h-12 w-full rounded-xl bg-mist" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
