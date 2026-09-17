@@ -45,6 +45,12 @@ public/build/
 # Local design drafts
 design*.md
 
+# Local docs (markdown not tracked)
+/docs
+
 # Local env files
 .env.local
 .env.*.local
+
+# Tool metadata
+.freebuff/

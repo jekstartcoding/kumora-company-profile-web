@@ -6,8 +6,9 @@ import { motion } from 'framer-motion';
 import SectionHeading from '@/components/SectionHeading';
 import CategorySection from '@/components/CategorySection';
 import TestimonialSection from '@/components/TestimonialSection';
-import { getFeaturedProducts, generateWhatsAppMessage, generateWhatsAppURL } from '@/data/products';
+import { products, generateWhatsAppURL } from '@/data/products';
 import { revealVariants, staggerContainer } from '@/lib/animations';
+import { useViewportAmount } from '@/hooks/useViewportAmount';
 
 const aboutImg =
   'https://images.pexels.com/photos/27164976/pexels-photo-27164976.jpeg?auto=compress&cs=tinysrgb&w=1200';
@@ -41,7 +42,8 @@ const principles = [
 ];
 
 function FeaturedSection() {
-  const featured = getFeaturedProducts();
+  const featured = products.slice(0, 4);
+  const viewportAmount = useViewportAmount();
 
   return (
     <section className="bg-ivory py-20 md:py-28">
@@ -57,7 +59,7 @@ function FeaturedSection() {
           variants={staggerContainer(0.06)}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: viewportAmount }}
         >
           {featured.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
@@ -65,7 +67,7 @@ function FeaturedSection() {
         </motion.div>
 
         <div className="mt-12 flex justify-center">
-          <Link to="/products" className="btn-secondary">
+          <Link to="/shop/pillows" className="btn-secondary">
             Lihat Semua Produk
             <ArrowRight className="h-4 w-4" />
           </Link>
@@ -76,27 +78,27 @@ function FeaturedSection() {
 }
 
 function AboutSection() {
+  const viewportAmount = useViewportAmount();
+
   return (
     <section className="bg-mist/50 py-20 md:py-28">
       <div className="container-wide">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="order-2 lg:order-1">
-            <p className="eyebrow">Tentang Kumora</p>
-            <h2 className="mt-3 font-serif text-display text-plum text-balance">
-              Kenyamanan Berawal dari Cara Anda Beristirahat.
+            <p className="eyebrow">Filosofi Kami</p>
+            <h2 className="mt-3 font-serif text-display text-charcoal text-balance">
+              Dibuat untuk Istirahat yang Nyata
             </h2>
-            <div className="mt-6 space-y-4 text-base leading-relaxed text-charcoal-muted">
-              <p>
-                Kumora didirikan dengan keyakinan sederhana: istirahat yang lebih baik dimulai dari
-                pilihan yang lebih baik. Dari bantal dan kasur hingga perlengkapan tidur, kami
-                menciptakan produk yang menghadirkan kenyamanan, kualitas, dan desain yang dipikirkan
-                dengan matang dalam kehidupan sehari-hari.
-              </p>
-              <p>
-                Kami percaya kamar tidur seharusnya lebih dari sekadar tempat tidur. Ia harus menjadi
-                ruang untuk melambat, mengisi ulang energi, dan merasa seperti di rumah.
-              </p>
-            </div>
+            <p className="mt-6 text-base leading-relaxed text-charcoal-muted">
+              Kumora lahir dari pemahaman sederhana: istirahat berkualitas membutuhkan perlengkapan
+              yang benar-benar bekerja untuk tubuh Anda. Kami tidak percaya pada klaim berlebihan —
+              kami fokus pada bahan terbaik, konstruksi yang teliti, dan kenyamanan yang konsisten
+              setiap malam.
+            </p>
+            <p className="mt-4 text-base leading-relaxed text-charcoal-muted">
+              Setiap produk kami uji langsung dalam kehidupan sehari-hari, memastikan setiap serat dan
+              lapisan memberikan kenyamanan yang Anda rasakan sejak pemakaian pertama.
+            </p>
             <Link to="/about" className="link-arrow mt-8">
               Kenali Kisah Kami
               <ArrowRight className="h-4 w-4" />
@@ -107,7 +109,7 @@ function AboutSection() {
             variants={revealVariants}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: viewportAmount }}
           >
             <img
               src={aboutImg}
@@ -134,10 +136,10 @@ function WhySection() {
         <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-rose/40 bg-rose/40 sm:grid-cols-2 lg:grid-cols-4">
           {principles.map((p, i) => (
             <div key={i} className="bg-ivory p-7 md:p-8">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-mauve/15 text-plum">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-mauve/15 text-charcoal">
                 <p.icon className="h-5 w-5" strokeWidth={1.5} />
               </div>
-              <h3 className="mt-5 font-serif text-lg text-plum">{p.title}</h3>
+              <h3 className="mt-5 font-serif text-lg text-charcoal">{p.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-charcoal-muted">{p.description}</p>
             </div>
           ))}
@@ -148,6 +150,8 @@ function WhySection() {
 }
 
 function StatementSection() {
+  const viewportAmount = useViewportAmount();
+
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
@@ -157,7 +161,7 @@ function StatementSection() {
           loading="lazy"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-plum/55 via-plum/25 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/55 via-charcoal/25 to-transparent" />
       </div>
       <div className="container-wide relative py-24 md:py-36">
         <motion.div
@@ -165,7 +169,7 @@ function StatementSection() {
           variants={revealVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: viewportAmount }}
         >
           <h2 className="font-serif text-display text-ivory text-balance md:text-[3.5rem]">
             Istirahat Anda Berarti.
@@ -179,29 +183,39 @@ function StatementSection() {
 
 function FinalCTA() {
   return (
-    <section className="bg-plum py-20 md:py-28">
+    <section className="bg-mist py-20 md:py-28">
       <div className="container-wide">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-serif text-display text-ivory text-balance">
+          <h2 className="font-serif text-display text-charcoal text-balance">
             Siap Menemukan Kenyamanan Anda?
           </h2>
-          <p className="mt-5 text-base text-ivory/70">
+          <p className="mt-5 text-base text-charcoal-muted">
             Jelajahi koleksi Kumora atau bicara langsung dengan tim kami untuk menemukan produk yang
             tepat untuk Anda.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
-              to="/products"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-blush-dark"
+              to="/shop/pillows"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-plum px-7 py-3.5 text-center text-sm font-medium text-ivory transition-colors duration-300 ease-out hover:bg-plum-700 sm:w-auto"
             >
               Lihat Produk
               <ArrowRight className="h-4 w-4" />
             </Link>
+            <Link
+              to="/quiz"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-plum/30 px-7 py-3.5 text-center text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-plum/10 sm:w-auto"
+            >
+              Belum tahu yang cocok? Temukan pilihan Anda
+            </Link>
             <a
-              href={generateWhatsAppURL(generateWhatsAppMessage())}
+              href={generateWhatsAppURL({
+                type: 'standard',
+                productName: 'Kumora products',
+                variantLabel: 'general inquiry',
+              })}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-ivory/30 px-7 py-3.5 text-sm font-medium text-ivory transition-colors duration-300 ease-out hover:bg-ivory/10"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-plum/30 px-7 py-3.5 text-center text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-plum/10 sm:w-auto"
             >
               <MessageCircle className="h-4 w-4" />
               Chat melalui WhatsApp

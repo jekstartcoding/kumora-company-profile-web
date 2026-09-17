@@ -1,27 +1,24 @@
 import { Link } from 'react-router-dom';
 import { MessageCircle, Instagram, Facebook, Music2 } from 'lucide-react';
-import { generateWhatsAppMessage, generateWhatsAppURL } from '@/data/products';
+import { generateWhatsAppURL } from '@/data/products';
 
 const exploreLinks = [
-  { label: 'Produk', to: '/products' },
-  { label: 'Bantal', to: '/products?category=Pillows' },
-  { label: 'Kasur', to: '/products?category=Mattresses' },
-  { label: 'Seprai Penutup', to: '/products?category=Bed+Covers' },
-  { label: 'Seprai', to: '/products?category=Bedsheets' },
+  { label: 'Pillows', to: '/shop/pillows' },
+  { label: 'Bolsters', to: '/shop/bolsters' },
+  { label: 'Beds', to: '/shop/beds' },
 ];
 
 const companyLinks = [
   { label: 'Tentang Kami', to: '/about' },
-  { label: 'Kisah Kami', to: '/about' },
   { label: 'Tanya Jawab', to: '/faq' },
   { label: 'Kontak', to: '/contact' },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-plum text-ivory">
+    <footer className="bg-charcoal text-ivory">
       <div className="container-wide py-16 md:py-20">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+        <div className="grid gap-10 md:grid-cols-2 md:gap-8 lg:grid-cols-4 lg:gap-8">
           <div className="lg:col-span-1">
             <div className="inline-flex rounded-full bg-ivory px-4 py-2">
               <img src="/kumora-logo-with-text.png" alt="Kumora" className="h-7 w-auto object-contain" />
@@ -69,7 +66,11 @@ export default function Footer() {
             <ul className="mt-5 space-y-3">
               <li>
                 <a
-                  href={generateWhatsAppURL(generateWhatsAppMessage())}
+                  href={generateWhatsAppURL({
+                    type: 'standard',
+                    productName: 'Kumora products',
+                    variantLabel: 'general inquiry',
+                  })}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm text-ivory/75 transition-colors duration-300 ease-out hover:text-mauve"

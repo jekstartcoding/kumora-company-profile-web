@@ -25,7 +25,7 @@ export default function SectionHeading({
       )}
       <h2
         className={`mt-3 font-serif text-section ${
-          light ? 'text-ivory' : 'text-plum'
+          light ? 'text-ivory' : 'text-charcoal'
         } text-balance`}
       >
         {title}

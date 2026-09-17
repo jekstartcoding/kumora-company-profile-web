@@ -6,42 +6,24 @@ import SectionHeading from '@/components/SectionHeading';
 import {
   products,
   filterProducts,
-  sortProducts,
   type ProductCategory,
-  type SortOption,
 } from '@/data/products';
 
 const categoryOptions: (ProductCategory | 'Semua')[] = [
   'Semua',
-  'Bantal',
-  'Kasur',
-  'Seprai Penutup',
-  'Seprai',
-  'Guling',
-  'Aksesori',
+  'pillows',
+  'bolsters',
+  'beds',
 ];
 
 const categoryUrlMap: Record<string, ProductCategory | 'Semua'> = {
-  'Bantal': 'Bantal',
-  'Kasur': 'Kasur',
-  'Seprai Penutup': 'Seprai Penutup',
-  'Seprai': 'Seprai',
-  'Guling': 'Guling',
-  'Aksesori': 'Aksesori',
-  'Pillows': 'Bantal',
-  'Mattresses': 'Kasur',
-  'Bed Covers': 'Seprai Penutup',
-  'Bedsheets': 'Seprai',
-  'Bolsters': 'Guling',
-  'Accessories': 'Aksesori',
+  pillows: 'pillows',
+  bolsters: 'bolsters',
+  beds: 'beds',
+  Pillows: 'pillows',
+  Bolsters: 'bolsters',
+  Beds: 'beds',
 };
-
-const sortOptions: { value: SortOption; label: string }[] = [
-  { value: 'featured', label: 'Unggulan' },
-  { value: 'newest', label: 'Terbaru' },
-  { value: 'price-asc', label: 'Harga: Rendah ke Tinggi' },
-  { value: 'price-desc', label: 'Harga: Tinggi ke Rendah' },
-];
 
 export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -50,7 +32,6 @@ export default function ProductsPage() {
   const [category, setCategory] = useState<ProductCategory | 'Semua'>(
     categoryParam && categoryParam in categoryUrlMap ? categoryUrlMap[categoryParam] : 'Semua'
   );
-  const [sort, setSort] = useState<SortOption>('featured');
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
@@ -76,20 +57,27 @@ export default function ProductsPage() {
   const handleReset = () => {
     setSearch('');
     setCategory('Semua');
-    setSort('featured');
     setSearchParams({});
   };
 
   const filtered = useMemo(() => {
-    const result = filterProducts(products, { search, category });
-    return sortProducts(result, sort);
-  }, [search, category, sort]);
+    const categoryProducts = filterProducts(products, category === 'Semua' ? {} : { category });
+    const query = search.trim().toLowerCase();
 
-  const hasActiveFilters = search !== '' || category !== 'Semua' || sort !== 'featured';
+    if (!query) return categoryProducts;
+
+    return categoryProducts.filter((product) =>
+      `${product.name} ${product.category} ${product.shortDescription} ${product.description}`
+        .toLowerCase()
+        .includes(query)
+    );
+  }, [category, search]);
+
+  const hasActiveFilters = search !== '' || category !== 'Semua';
 
   return (
     <>
-      <section className="bg-blush/30 pb-12 pt-28 md:pt-36">
+      <section className="bg-blush/30 pb-12 pt-12 md:pt-16">
         <div className="container-wide">
           <SectionHeading
             eyebrow="Koleksi Kumora"
@@ -122,22 +110,6 @@ export default function ProductsPage() {
                   <SlidersHorizontal className="h-4 w-4" />
                   Filter
                 </button>
-                <div className="relative">
-                  <select
-                    value={sort}
-                    onChange={(e) => setSort(e.target.value as SortOption)}
-                    className="appearance-none rounded-full border border-rose/50 bg-ivory py-3 pl-5 pr-10 text-sm font-medium text-charcoal focus:border-plum focus:outline-none focus:ring-1 focus:ring-plum"
-                  >
-                    {sortOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-charcoal-muted">
-                    ▾
-                  </span>
-                </div>
               </div>
             </div>
 
@@ -186,7 +158,7 @@ export default function ProductsPage() {
             {hasActiveFilters && (
               <button
                 onClick={handleReset}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-plum transition-colors hover:text-mauve"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-plum transition-colors hover:text-plum-700"
               >
                 <X className="h-3.5 w-3.5" />
                 Reset Filter
@@ -203,7 +175,7 @@ export default function ProductsPage() {
             </div>
           ) : (
             <div className="mt-16 flex flex-col items-center justify-center rounded-2xl border border-rose/40 bg-blush/30 px-6 py-16 text-center">
-              <h3 className="font-serif text-2xl text-plum">Produk tidak ditemukan</h3>
+              <h3 className="font-serif text-2xl text-charcoal">Produk tidak ditemukan</h3>
               <p className="mt-3 max-w-sm text-sm text-charcoal-muted">
                 Coba cari produk lain atau reset filter.
               </p>

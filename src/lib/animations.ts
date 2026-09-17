@@ -8,16 +8,24 @@ export const easeOut = [0.4, 0, 1, 1] as const;       // exit / settling
 
 // Page transitions should feel like replacement, not a slide presentation.
 export const pageVariants: Variants = {
-  initial: { opacity: 0, y: 8 },
+  initial: { opacity: 0, y: 6 },
   animate: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.36, ease },
+    transition: { duration: 0.28, ease },
   },
   exit: {
     opacity: 0,
-    transition: { duration: 0.22, ease: easeOut },
+    y: -4,
+    transition: { duration: 0.18, ease: easeOut },
   },
+};
+
+// Quiz steps slide smoothly along the horizontal axis with exit
+export const quizStepVariants: Variants = {
+  hidden: { opacity: 0, x: 24 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.38, ease } },
+  exit: { opacity: 0, x: -24, transition: { duration: 0.22, ease: easeOut } },
 };
 
 // Stagger kept short and capped. Use this only for visually grouped sets.
@@ -31,11 +39,21 @@ export const staggerContainer = (stagger = 0.06): Variants => ({
 // Default content reveal. Same shape for headings, cards, paragraphs.
 // Keep translate small and duration consistent across the site.
 export const revealVariants: Variants = {
-  hidden: { opacity: 0, y: 14 },
+  hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.52, ease },
+    transition: { duration: 0.48, ease },
+  },
+};
+
+// First-fold entry for direct PDP and Quiz visits. Keep this below 600ms.
+export const entryDecelerateVariants: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.48, ease },
   },
 };
 

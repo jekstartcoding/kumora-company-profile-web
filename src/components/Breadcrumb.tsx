@@ -14,7 +14,14 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <motion.nav aria-label="Jejak navigasi" className="flex items-center gap-1.5 text-sm" variants={revealVariants} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
+    <motion.nav
+      aria-label="Jejak navigasi"
+      className="flex flex-wrap items-center gap-1.5 text-sm"
+      variants={revealVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.1 }}
+    >
       {items.map((item, i) => {
         const isLast = i === items.length - 1;
         return (
@@ -22,16 +29,16 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
             {item.to && !isLast ? (
               <Link
                 to={item.to}
-                    className="text-charcoal-muted transition-colors hover:text-plum"
+                className="text-charcoal-muted transition-colors hover:text-plum"
               >
                 {item.label}
               </Link>
             ) : (
-                  <span className={isLast ? 'font-medium text-plum' : 'text-charcoal-muted'}>
+              <span className={isLast ? 'max-w-[180px] truncate font-medium text-plum sm:max-w-none' : 'text-charcoal-muted'}>
                 {item.label}
               </span>
             )}
-            {!isLast && <ChevronRight className="h-3.5 w-3.5 text-rose" />}
+            {!isLast && <ChevronRight className="h-3.5 w-3.5 shrink-0 text-rose" />}
           </span>
         );
       })}

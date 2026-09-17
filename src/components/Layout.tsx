@@ -1,35 +1,27 @@
 import type { ReactNode } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import Navbar from './Navbar';
+import BottomNav from './BottomNav';
 import Footer from './Footer';
+import ScrollProgress from './ScrollProgress';
 import WhatsAppButton from './WhatsAppButton';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
-import { pageVariants } from '@/lib/animations';
 
 export default function Layout({ children }: { children: ReactNode }) {
   useScrollToTop();
   const location = useLocation();
+  const hideWhatsApp = location.pathname.startsWith('/product/');
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
+      <BottomNav />
+      <ScrollProgress />
 
-      <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo(0, 0)}>
-        <motion.main
-          key={location.pathname}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={pageVariants}
-          className="flex-1"
-        >
-          {children}
-        </motion.main>
-      </AnimatePresence>
+      <main className="flex-1">
+        {children}
+      </main>
 
       <Footer />
-      <WhatsAppButton />
+      {!hideWhatsApp && <WhatsAppButton />}
     </div>
   );
 }

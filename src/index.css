@@ -3,21 +3,32 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bottom-nav-h: 72px;
+  }
+
   html {
     scroll-behavior: smooth;
+    scrollbar-width: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    background-color: #eee4e1;
+    background-color: #faf3ec;
     font-family: 'Inter', system-ui, sans-serif;
     line-height: 1.6;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
   }
 
   ::selection {
-    background-color: #735d78;
-    color: #eee4e1;
+    background-color: #8b2a3a;
+    color: #faf3ec;
   }
 
   ::-webkit-scrollbar {
@@ -25,22 +36,22 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #eee4e1;
+    background: #faf3ec;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #d1b3c4;
+    background: #e8dfd3;
     border-radius: 5px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #9d8ea0;
+    background: #c9d6c5;
   }
 }
 
 @layer components {
   .eyebrow {
-    @apply text-xs font-medium uppercase tracking-[0.2em] text-mauve;
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-charcoal;
   }
 
   .btn-primary {
@@ -64,15 +75,36 @@
   .text-balance {
     text-wrap: balance;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  .pb-nav-safe {
+    padding-bottom: calc(var(--bottom-nav-h, 72px) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .pb-nav-cta-safe {
+    padding-bottom: calc(var(--bottom-nav-h, 72px) + 64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .bottom-nav-cta-safe {
+    bottom: calc(var(--bottom-nav-h, 72px) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      #e8dfd3 25%,
+      #f5ece6 50%,
+      #e8dfd3 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
   }
 }

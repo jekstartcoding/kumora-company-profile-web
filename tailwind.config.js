@@ -5,27 +5,27 @@ export default {
     extend: {
       colors: {
         plum: {
-          DEFAULT: '#735D78',
-          700: '#5C4A60',
-          800: '#453848',
-          light: '#9D8EA0',
+          DEFAULT: '#8B2A3A',
+          700: '#732331',
+          800: '#5D1C28',
+          light: '#B45A68',
         },
         ivory: {
-          DEFAULT: '#EEE4E1',
+          DEFAULT: '#FAF3EC',
         },
-        mist: '#ECF8F8',
+        mist: '#E3D1D2',
         blush: {
-          DEFAULT: '#F7D1CD',
-          dark: '#E8C2CA',
+          DEFAULT: '#EFD6D3',
+          dark: '#EFD6D3',
         },
-        rose: '#D1B3C4',
-        mauve: '#B392AC',
-        sand: '#E7D8C9',
-        tan: '#B2967D',
+        rose: '#E8DFD3',
+        mauve: '#C9D6C5',
+        sand: '#E8DFD3',
+        tan: '#E8DFD3',
         charcoal: {
-          DEFAULT: '#252525',
-          light: '#4A4A4A',
-          muted: '#6B6B6B',
+          DEFAULT: '#3E2C30',
+          light: '#3E2C30',
+          muted: '#3E2C30',
         },
       },
       fontFamily: {
