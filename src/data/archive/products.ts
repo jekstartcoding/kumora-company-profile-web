@@ -5,10 +5,10 @@ export type {
   ProductSensorySpec,
   ProductSpecification,
   ProductVariant,
-} from './types';
-import type { Product, ProductCategory } from './types';
+} from '../types';
+import type { Product, ProductCategory } from '../types';
 
-export { CATEGORY_LABELS } from './types';
+export { CATEGORY_LABELS } from '../types';
 
 export const WHATSAPP_NUMBER = '6281234567890';
 

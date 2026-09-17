@@ -22,7 +22,7 @@ export interface ProductVariant {
 // ===== REVIEW PRODUK (diperluas) =====
 
 export interface ProductReview {
-  id: number;
+  id: number | string; // Fase 9: UUID string dari database (sebelumnya number statis)
   author: string;
   rating: number;
   comment: string;

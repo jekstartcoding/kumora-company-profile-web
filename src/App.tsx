@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Routes, Route, useParams, useLocation } from '
 import { AnimatePresence } from 'framer-motion';
 import Layout from '@/components/Layout';
 import PageTransition from '@/components/PageTransition';
+import AdminRoutes from '@/admin/AdminRoutes';
 import HomePage from '@/pages/HomePage';
 import AboutPage from '@/pages/AboutPage';
 import CollectionPage from '@/pages/CollectionPage';
@@ -17,6 +18,12 @@ function LegacyProductRedirect() {
 
 function AnimatedRoutes() {
   const location = useLocation();
+
+  // Admin panel dirender terpisah — tanpa Layout customer (Navbar/BottomNav/Footer)
+  // dan tanpa PageTransition (transisi punya sistemnya sendiri).
+  if (location.pathname.startsWith('/admin')) {
+    return <AdminRoutes />;
+  }
 
   return (
     <AnimatePresence mode="wait">
