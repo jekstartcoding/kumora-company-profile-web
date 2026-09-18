@@ -114,7 +114,6 @@ export default function Footer() {
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-ivory/10 pt-6 sm:flex-row sm:items-center md:mt-14 md:pt-8">
           <p className="text-xs text-ivory/50">© 2026 Kumora. Hak cipta dilindungi.</p>
-          <p className="text-xs text-ivory/40">Situs prototipe — data merek fiktif</p>
         </div>
       </div>
     </footer>

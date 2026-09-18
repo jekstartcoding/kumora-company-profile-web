@@ -14,7 +14,7 @@ export default function CollectionPage() {
   const isValidCategory = category && validCategories.includes(category);
   const selectedCategory = isValidCategory ? category : 'pillows';
   const { products, loading, error } = useProducts();
-  const collection = filterProducts(products, { category: selectedCategory }).slice(0, 4);
+  const collection = filterProducts(products, { category: selectedCategory });
 
   return (
     <>
