@@ -7,11 +7,21 @@
 .adm-shell {
     @apply flex min-h-screen bg-gray-100;
   }
-  /* Tanpa `flex` di sini: display dikontrol markup (`hidden lg:flex` di desktop,
-     drawer fixed di mobile) supaya utility hidden tidak tertimpa saat CSS ini
-     diimpor setelah index.css. */
+  /* Ukuran (w/h) & display TIDAK di-set di sini — dikontrol markup supaya
+     utility Tailwind (hidden, w-*, h-screen) tidak tertimpa CSS ini.
+     Desktop: sticky h-screen full-height; mobile: drawer inset-y-0. */
   .adm-sidebar {
-    @apply h-full w-64 shrink-0 flex-col bg-charcoal text-gray-100 shadow-xl;
+    @apply shrink-0 flex-col bg-charcoal text-gray-100 shadow-xl;
+  }
+  /* Mode minimize (desktop): rail ikon lebar 80px */
+  .adm-sidebar-collapsed {
+    @apply w-20;
+  }
+  .adm-sidebar-brand-collapsed {
+    @apply justify-center px-3;
+  }
+  .adm-nav-item-collapsed {
+    @apply justify-center px-0;
   }
   .adm-sidebar-brand {
     @apply flex h-16 items-center gap-2.5 border-b border-white/10 px-5;
