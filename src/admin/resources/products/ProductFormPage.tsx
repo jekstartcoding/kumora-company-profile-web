@@ -1,7 +1,7 @@
 // Fase 7 — Form view Products (7.2) dengan validasi mirror backend (7.3).
 // Section: Basic Info, Sensory Spec, Logistics, Gift, Images, Variants, Reviews.
 // Backend tetap sumber kebenaran akhir — validasi di sini hanya untuk feedback instan.
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ResourceForm from '../../components/ResourceForm';
 import ImageUploader, { type AdminImage } from '../../components/ImageUploader';
@@ -643,11 +643,18 @@ function DiscountSection({
     percentage > 0 ? 'percentage' : amount > 0 ? 'amount' : 'none';
   const [tab, setTab] = useState<'percentage' | 'amount' | 'none'>(activeTab);
 
-  // Sinkron saat data lama termuat / setelah validasi backend mengubah nilai
+  // Tab HANYA berpindah saat diklik — TIDAK mengikuti nilai input (user sering
+  // mengosongkan angka untuk mengetik nilai baru; auto-switch saat nilai 0
+  // mengganggu). Pengecualian: transisi "tanpa diskon → ada diskon" dari luar
+  // (data produk termuat saat edit) tetap membuka tab yang sesuai.
+  const hadActiveRef = useRef(percentage > 0 || amount > 0);
   useEffect(() => {
-    setTab(activeTab);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab === 'percentage', activeTab === 'amount', activeTab === 'none']);
+    const hasActive = percentage > 0 || amount > 0;
+    if (hasActive && !hadActiveRef.current) {
+      setTab(percentage > 0 ? 'percentage' : 'amount');
+    }
+    hadActiveRef.current = hasActive;
+  }, [percentage, amount]);
 
   const selectTab = (t: 'percentage' | 'amount' | 'none') => {
     setTab(t);
