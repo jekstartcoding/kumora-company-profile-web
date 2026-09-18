@@ -11,7 +11,7 @@
      utility Tailwind (hidden, w-*, h-screen) tidak tertimpa CSS ini.
      Desktop: sticky h-screen full-height; mobile: drawer inset-y-0. */
   .adm-sidebar {
-    @apply shrink-0 flex-col bg-charcoal text-gray-100 shadow-xl;
+    @apply shrink-0 flex-col overflow-x-hidden bg-charcoal text-gray-100 shadow-xl;
   }
   /* Mode minimize (desktop): rail ikon lebar 80px */
   .adm-sidebar-collapsed {
@@ -34,6 +34,23 @@
   }
   .adm-nav-item-active {
     @apply bg-plum text-white hover:bg-plum hover:text-white;
+  }
+  /* Header grup CMS yang foldable (Home Page / About Page) */
+  .adm-nav-group-btn {
+    @apply flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10;
+  }
+  .adm-nav-chevron {
+    @apply ml-auto h-3.5 w-3.5 text-gray-500 transition-transform duration-200;
+  }
+  /* Sembunyikan scrollbar sidebar (vertikal & horizontal) — mengganggu visual.
+     Konten tetap bisa di-scroll (nav punya overflow-y-auto), hanya indikatornya
+     yang tidak tampil. */
+  .adm-sidebar nav {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .adm-sidebar nav::-webkit-scrollbar {
+    display: none;
   }
   .adm-sidebar-footer {
     @apply border-t border-white/10 px-5 py-4 text-xs text-gray-500;

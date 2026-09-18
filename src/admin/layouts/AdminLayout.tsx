@@ -17,6 +17,25 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState<string>('');
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Foldable group CMS (Home Page / About Page) — persist per group in localStorage.
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('kumora-admin-cms-groups') ?? '{}');
+    } catch {
+      return {};
+    }
+  });
+  const toggleGroup = (key: string) => {
+    setOpenGroups((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      try {
+        localStorage.setItem('kumora-admin-cms-groups', JSON.stringify(next));
+      } catch {
+        /* private mode — state in-memory tetap jalan */
+      }
+      return next;
+    });
+  };
   // Minimize sidebar (desktop): rail ikon 80px. Persist di localStorage.
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -87,33 +106,55 @@ export default function AdminLayout() {
 
         {!collapsed && (
           <>
-            {/* CMS: langsung 2 grup halaman dengan ikon — tanpa header grup foldable */}
+            {/* Separator "CMS Section" — elemennya sama dengan "Catalog" (teks saja) */}
+            <p className="adm-sidebar-section">CMS Section</p>
+            {/* 2 grup halaman CMS, foldable: Home Page & About Page */}
             {([
-              { group: CMS_NAV.homepage, icon: Home, label: 'Home Page' },
-              { group: CMS_NAV.about, icon: Info, label: 'About Page' },
-            ] as const).map(({ group, icon: GroupIcon, label }) => (
-              <div key={label}>
-                <div className="adm-nav-item pointer-events-none font-semibold text-white">
-                  <GroupIcon className="h-4 w-4 shrink-0" />
-                  {label}
-                </div>
-                {group.items.map((item) => (
-                  <NavLink
-                    key={item.slug}
-                    to={`/admin/cms/${item.slug}`}
-                    onClick={() => setMobileOpen(false)}
-                    className={({ isActive }) =>
-                      `adm-nav-item ml-4 border-l border-white/10 pl-3 text-xs ${
-                        isActive ? 'adm-nav-item-active' : ''
-                      }`
-                    }
+              { key: 'homepage', group: CMS_NAV.homepage, icon: Home, label: 'Home Page' },
+              { key: 'about', group: CMS_NAV.about, icon: Info, label: 'About Page' },
+            ] as const).map(({ key, group, icon: GroupIcon, label }) => {
+              const isOpen = openGroups[key] ?? true;
+              // Grup dianggap aktif jika salah satu sub-item-nya sedang dibuka
+              const hasActive = group.items.some((item) =>
+                location.pathname === `/admin/cms/${item.slug}` ||
+                location.pathname.startsWith(`/admin/cms/${item.slug}/`),
+              );
+              return (
+                <div key={key}>
+                  <button
+                    type="button"
+                    onClick={() => toggleGroup(key)}
+                    className={`adm-nav-group-btn ${hasActive ? 'text-white' : ''}`}
+                    aria-expanded={isOpen}
                   >
-                    <ChevronRight className="h-3 w-3 shrink-0 text-gray-500" />
-                    {item.label}
-                  </NavLink>
-                ))}
-              </div>
-            ))}
+                    <GroupIcon className="h-4 w-4 shrink-0" />
+                    {label}
+                    <ChevronRight
+                      className={`adm-nav-chevron ${isOpen ? 'rotate-90' : ''}`}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div>
+                      {group.items.map((item) => (
+                        <NavLink
+                          key={item.slug}
+                          to={`/admin/cms/${item.slug}`}
+                          onClick={() => setMobileOpen(false)}
+                          className={({ isActive }) =>
+                            `adm-nav-item ml-4 border-l border-white/10 pl-3 text-xs ${
+                              isActive ? 'adm-nav-item-active' : ''
+                            }`
+                          }
+                        >
+                          <ChevronRight className="h-3 w-3 shrink-0 text-gray-500" />
+                          {item.label}
+                        </NavLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </>
         )}
       </nav>
