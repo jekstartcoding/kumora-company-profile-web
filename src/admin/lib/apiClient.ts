@@ -44,7 +44,7 @@ export async function apiGet<T>(path: string, params?: Record<string, unknown>):
 }
 
 export async function apiSend<T>(
-  method: 'post' | 'patch' | 'delete',
+  method: 'post' | 'patch' | 'delete' | 'put',
   path: string,
   body?: unknown
 ): Promise<T> {

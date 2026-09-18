@@ -36,6 +36,8 @@ export interface ResourceColumn<T> {
 export interface ResourceConfig<T> {
   name: string;
   endpoint: string;
-  columns: ResourceColumn<T>[];
+  /** BARU (plan CMS 5.3): "list" = ResourceTable+Form biasa, "singleton" = langsung form edit 1 row. */
+  mode?: 'list' | 'singleton';
+  columns?: ResourceColumn<T>[];
   formFields: FormFieldConfig[];
 }

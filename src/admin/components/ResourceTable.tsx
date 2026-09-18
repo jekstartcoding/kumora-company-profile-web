@@ -55,7 +55,7 @@ export default function ResourceTable<T extends { id: string }>({
           <table className="adm-table">
             <thead>
               <tr>
-                {config.columns.map((col) => (
+                {(config.columns ?? []).map((col) => (
                   <th
                     key={col.key}
                     onClick={() => toggleSort(col.key)}
@@ -79,7 +79,7 @@ export default function ResourceTable<T extends { id: string }>({
             <tbody>
               {loading && (
                 <tr>
-                  <td colSpan={config.columns.length + 1} className="py-10 text-center text-gray-400">
+                  <td colSpan={(config.columns ?? []).length + 1} className="py-10 text-center text-gray-400">
                     <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-500 align-middle" />
                     Memuat…
                   </td>
@@ -87,14 +87,14 @@ export default function ResourceTable<T extends { id: string }>({
               )}
               {!loading && sorted.length === 0 && (
                 <tr>
-                  <td colSpan={config.columns.length + 1} className="py-10 text-center text-gray-400">
+                  <td colSpan={(config.columns ?? []).length + 1} className="py-10 text-center text-gray-400">
                     Belum ada data.
                   </td>
                 </tr>
               )}
               {sorted.map((row) => (
                 <tr key={row.id}>
-                  {config.columns.map((col) => (
+                  {(config.columns ?? []).map((col) => (
                     <td key={col.key}>
                       {col.render
                         ? col.render(row)
