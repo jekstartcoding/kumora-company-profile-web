@@ -35,23 +35,8 @@ const BASIC_FIELDS = [
   { key: 'brand_story_line', label: 'Brand Story Line', type: 'textarea' as const, required: true },
 ];
 
-const DISCOUNT_FIELDS = [
-  {
-    key: 'discount_percentage',
-    label: 'Discount Percentage (0-100)',
-    type: 'number' as const,
-    min: 0,
-    max: 100,
-    helpText: 'Isi SALAH SATU saja: persen ATAU nominal. 0 = tanpa diskon.',
-  },
-  {
-    key: 'discount_amount',
-    label: 'Discount Amount (IDR)',
-    type: 'number' as const,
-    min: 0,
-    helpText: 'Potongan nominal, tidak boleh melebihi Price. 0 = tanpa diskon.',
-  },
-];
+// (Discount tidak lagi memakai ResourceForm generik — lihat DiscountSection:
+//  tab UI mencegah keduanya terisi sekaligus.)
 
 const SENSORY_FIELDS = [
   { key: 'sensory_descriptor', label: 'Sensory Descriptor', type: 'text' as const, required: true },
@@ -384,7 +369,23 @@ export default function ProductFormPage() {
       </Section>
 
       <Section title="Discount">
-        <ResourceForm fields={DISCOUNT_FIELDS} values={values} errors={errors} onChange={setField} />
+        <DiscountSection
+          percentage={Number(values.discount_percentage ?? 0)}
+          amount={Number(values.discount_amount ?? 0)}
+          price={Number(values.price ?? 0)}
+          errors={errors}
+          onChange={(patch) =>
+            setValues((v) => {
+              const next = { ...v, ...patch } as Record<string, unknown>;
+              // pindah tab otomatis meng-nol-kan jenis lain — mencegah keduanya terisi
+              if (patch.discount_percentage !== undefined && Number(patch.discount_percentage) > 0) next.discount_amount = 0;
+              if (patch.discount_amount !== undefined && Number(patch.discount_amount) > 0) next.discount_percentage = 0;
+              return next;
+            })
+          }
+          onClear={() => setValues((v) => ({ ...v, discount_percentage: 0, discount_amount: 0 }))}
+          onClearError={(k) => setErrors((e) => ({ ...e, [k]: '' }))}
+        />
       </Section>
 
       <Section title="Logistics">
@@ -614,6 +615,141 @@ export default function ProductFormPage() {
           {busy ? 'Menyimpan…' : 'Simpan'}
         </button>
       </div>
+    </div>
+  );
+}
+
+// ===== Discount: tab Percentage / Fixed Amount =====
+// UI mencegah keduanya terisi: pindah tab otomatis meng-nol-kan jenis lain.
+// Validasi tetap mirror backend (DISCOUNT_EXCLUSIVE) sebagai safety net.
+function DiscountSection({
+  percentage,
+  amount,
+  price,
+  errors,
+  onChange,
+  onClear,
+  onClearError,
+}: {
+  percentage: number;
+  amount: number;
+  price: number;
+  errors: Record<string, string>;
+  onChange: (patch: Record<string, unknown>) => void;
+  onClear: () => void;
+  onClearError: (key: string) => void;
+}) {
+  const activeTab: 'percentage' | 'amount' | 'none' =
+    percentage > 0 ? 'percentage' : amount > 0 ? 'amount' : 'none';
+  const [tab, setTab] = useState<'percentage' | 'amount' | 'none'>(activeTab);
+
+  // Sinkron saat data lama termuat / setelah validasi backend mengubah nilai
+  useEffect(() => {
+    setTab(activeTab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab === 'percentage', activeTab === 'amount', activeTab === 'none']);
+
+  const selectTab = (t: 'percentage' | 'amount' | 'none') => {
+    setTab(t);
+    if (t === 'none') {
+      onClear();
+      onClearError('discount_percentage');
+      onClearError('discount_amount');
+    } else if (t === 'percentage') {
+      onChange({ discount_percentage: percentage > 0 ? percentage : 1, discount_amount: 0 });
+    } else {
+      onChange({ discount_amount: amount > 0 ? amount : 1000, discount_percentage: 0 });
+    }
+  };
+
+  const tabClass = (active: boolean) =>
+    `flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors focus:outline-none ${
+      active
+        ? 'bg-plum text-white shadow-sm'
+        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+    }`;
+
+  const finalPrice =
+    tab === 'percentage' && percentage > 0
+      ? Math.round(price * (1 - percentage / 100))
+      : tab === 'amount' && amount > 0
+        ? Math.max(0, price - amount)
+        : null;
+  const shownPercent =
+    tab === 'amount' && amount > 0 && price > 0
+      ? Math.round((amount / price) * 100)
+      : percentage;
+
+  return (
+    <div className="space-y-4">
+      {/* Tab bar: No Discount | Percentage | Fixed Amount */}
+      <div className="flex gap-2 rounded-xl bg-gray-50 p-1.5">
+        <button type="button" className={tabClass(tab === 'none')} onClick={() => selectTab('none')}>
+          No Discount
+        </button>
+        <button type="button" className={tabClass(tab === 'percentage')} onClick={() => selectTab('percentage')}>
+          Percentage
+        </button>
+        <button type="button" className={tabClass(tab === 'amount')} onClick={() => selectTab('amount')}>
+          Fixed Amount
+        </button>
+      </div>
+
+      {tab === 'none' && (
+        <p className="text-sm text-gray-500">Produk ditampilkan tanpa diskon (harga normal).</p>
+      )}
+
+      {tab === 'percentage' && (
+        <div>
+          <label className="adm-label">Discount Percentage (0–100) *</label>
+          <input
+            type="number"
+            min={0}
+            max={100}
+            value={percentage}
+            onChange={(e) =>
+              onChange({ discount_percentage: e.target.value === '' ? 0 : Number(e.target.value) })
+            }
+            className={`adm-input ${errors.discount_percentage ? 'border-red-500' : ''}`}
+            placeholder="mis. 30"
+          />
+          {errors.discount_percentage && (
+            <p className="adm-field-error">{errors.discount_percentage}</p>
+          )}
+          <p className="adm-hint">Harga akhir = price × (1 − persen/100).</p>
+        </div>
+      )}
+
+      {tab === 'amount' && (
+        <div>
+          <label className="adm-label">Discount Amount (IDR) *</label>
+          <input
+            type="number"
+            min={0}
+            value={amount}
+            onChange={(e) =>
+              onChange({ discount_amount: e.target.value === '' ? 0 : Number(e.target.value) })
+            }
+            className={`adm-input ${errors.discount_amount ? 'border-red-500' : ''}`}
+            placeholder="mis. 30000"
+          />
+          {errors.discount_amount && <p className="adm-field-error">{errors.discount_amount}</p>}
+          <p className="adm-hint">Potongan nominal, tidak boleh melebihi Price. Persen badge dihitung otomatis.</p>
+        </div>
+      )}
+
+      {/* Preview live — admin langsung melihat hasil sebelum menyimpan */}
+      {finalPrice !== null && price > 0 && (
+        <div className="rounded-lg border border-plum/20 bg-plum/5 px-4 py-3 text-sm">
+          <span className="font-semibold text-plum">-{shownPercent}%</span>
+          <span className="ml-3 font-semibold text-plum">
+            {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(finalPrice)}
+          </span>
+          <span className="ml-2 text-gray-500 line-through">
+            {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(price)}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
