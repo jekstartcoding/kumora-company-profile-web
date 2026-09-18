@@ -11,7 +11,10 @@
      utility Tailwind (hidden, w-*, h-screen) tidak tertimpa CSS ini.
      Desktop: sticky h-screen full-height; mobile: drawer inset-y-0. */
   .adm-sidebar {
-    @apply shrink-0 flex-col overflow-x-hidden bg-charcoal text-gray-100 shadow-xl;
+    /* Tanpa overflow-x-hidden: tombol minimize menonjol setengah keluar tepi
+       kanan (-right-3) dan akan terpotong bila aside meng-clip kontennya.
+       Scrollbar nav tetap tersembunyi lewat rule .adm-sidebar nav di bawah. */
+    @apply shrink-0 flex-col bg-charcoal text-gray-100 shadow-xl;
   }
   /* Mode minimize (desktop): rail ikon lebar 80px */
   .adm-sidebar-collapsed {
