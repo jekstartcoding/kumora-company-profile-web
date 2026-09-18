@@ -54,3 +54,4 @@ design*.md
 
 # Tool metadata
 .freebuff/
+vite.config.ts.timestamp-*.mjs
