@@ -17,5 +17,9 @@ export const supabase = createClient(supabaseUrl, supabasePublishableKey, {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: false,
+    // Storage key terpisah dari client customer (src/lib/supabaseClient.ts) —
+    // dua GoTrueClient dengan storage key sama memicu warning
+    // "Multiple GoTrueClient instances detected" di console.
+    storageKey: 'kumora-admin-auth-token',
   },
 });
