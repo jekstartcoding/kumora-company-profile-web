@@ -1,76 +1,71 @@
+// Fase 7.2 (plan CMS) — seluruh section Homepage membaca dari Supabase (lib/cms).
+// Tidak ada lagi string konten hardcoded — sumber: tabel CMS yang diedit lewat
+// admin panel. Gambar lama (Pexels) hanya fallback visual ketika field gambar
+// kosong/null di database.
 import { Link } from 'react-router-dom';
-import { ArrowRight, MessageCircle, Layers, Heart, Sparkles, Headphones } from 'lucide-react';
-import HeroSection from '@/components/HeroSection';
+import { ArrowRight, MessageCircle, Layers, Heart, Sparkles, Headphones, HelpCircle } from 'lucide-react';
+import HeroSection, { CtaLink } from '@/components/HeroSection';
 import ProductCard from '@/components/ProductCard';
 import { motion } from 'framer-motion';
 import SectionHeading from '@/components/SectionHeading';
 import CategorySection from '@/components/CategorySection';
 import TestimonialSection from '@/components/TestimonialSection';
-import { useProducts } from '@/data/products';
-import { generateWhatsAppURL } from '@/data/content';
 import { revealVariants, staggerContainer } from '@/lib/animations';
 import { useViewportAmount } from '@/hooks/useViewportAmount';
+import {
+  useCmsData,
+  getHomeShowcase,
+  getHomePhilosophyTeaser,
+  getHomeTrust,
+  getHomeBanner,
+  getHomeFinalCta,
+  type HomeShowcaseSection,
+  type HomePhilosophyTeaser,
+  type HomeTrustSection,
+  type TrustItem,
+  type HomeBanner,
+  type HomeFinalCta,
+} from '@/lib/cms';
 
-const aboutImg =
+const FALLBACK_ABOUT_IMG =
   'https://images.pexels.com/photos/27164976/pexels-photo-27164976.jpeg?auto=compress&cs=tinysrgb&w=1200';
-
-const statementImg =
+const FALLBACK_STATEMENT_IMG =
   'https://images.pexels.com/photos/13009040/pexels-photo-13009040.jpeg?auto=compress&cs=tinysrgb&w=1600';
 
-const principles = [
-  {
-    icon: Layers,
-    title: 'Bahan Terpilih',
-    description: 'Kami memilih bahan dengan perhatian pada kenyamanan dan daya tahan sehari-hari.',
-  },
-  {
-    icon: Heart,
-    title: 'Kenyamanan Sehari-hari',
-    description: 'Produk kami dirancang untuk mendukung istirahat yang lebih baik tanpa mengorbankan kegunaan.',
-  },
-  {
-    icon: Sparkles,
-    title: 'Kualitas yang Terasa',
-    description:
-      'Kami memperhatikan bahan, konstruksi, dan detail yang membuat produk sehari-hari lebih baik.',
-  },
-  {
-    icon: Headphones,
-    title: 'Layanan Personal',
-    description:
-      'Tim kami siap melayani lewat WhatsApp untuk membantu pelanggan menemukan produk yang tepat.',
-  },
-];
+// Ikon trust items dipetakan dari icon_name (seed: layers/heart/sparkles/headphones).
+const TRUST_ICONS: Record<string, typeof Layers> = {
+  layers: Layers,
+  heart: Heart,
+  sparkles: Sparkles,
+  headphones: Headphones,
+};
 
 function FeaturedSection() {
-  const { products, loading, error } = useProducts();
-  const featured = products.slice(0, 4);
+  const { data } = useCmsData<{ section: HomeShowcaseSection; products: import('@/data/types').Product[] }>(getHomeShowcase);
   const viewportAmount = useViewportAmount();
+
+  const products = (data?.products ?? []) as unknown as import('@/data/types').Product[];
 
   return (
     <section className="bg-ivory py-20 md:py-28">
       <div className="container-wide">
         <SectionHeading
-          eyebrow="Koleksi Kami"
-          title="Kenyamanan yang Dipilih untuk Anda"
-          description="Temukan perlengkapan sehari-hari yang dirancang untuk menjadikan kamar Anda lebih nyaman."
+          eyebrow={data?.section.eyebrow ?? '…'}
+          title={data?.section.title ?? '…'}
+          description={data?.section.subtitle ?? '…'}
         />
 
-        {error ? (
-          <p className="mt-12 text-center text-sm text-charcoal-muted">Gagal memuat produk — coba muat ulang halaman.</p>
-        ) : (
-          <motion.div
-            className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8"
-            variants={staggerContainer(0.06)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: viewportAmount }}
-          >
-            {loading
-              ? Array.from({ length: 4 }).map((_, i) => <ProductCardSkeleton key={i} />)
-              : featured.map((product, i) => <ProductCard key={product.id} product={product} index={i} />)}
-          </motion.div>
-        )}
+        <motion.div
+          className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8"
+          variants={staggerContainer(0.06)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: viewportAmount }}
+        >
+          {!data
+            ? Array.from({ length: 4 }).map((_, i) => <ProductCardSkeleton key={i} />)
+            : products.map((product, i) => <ProductCard key={product.id} product={product} index={i} />)}
+        </motion.div>
 
         <div className="mt-12 flex justify-center">
           <Link to="/shop/pillows" className="btn-secondary">
@@ -94,6 +89,7 @@ function ProductCardSkeleton() {
 }
 
 function AboutSection() {
+  const { data } = useCmsData<HomePhilosophyTeaser>(getHomePhilosophyTeaser);
   const viewportAmount = useViewportAmount();
 
   return (
@@ -101,24 +97,18 @@ function AboutSection() {
       <div className="container-wide">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="order-2 lg:order-1">
-            <p className="eyebrow">Filosofi Kami</p>
+            <p className="eyebrow">{data?.eyebrow ?? '…'}</p>
             <h2 className="mt-3 font-serif text-display text-charcoal text-balance">
-              Dibuat untuk Istirahat yang Nyata
+              {data?.title ?? '…'}
             </h2>
-            <p className="mt-6 text-base leading-relaxed text-charcoal-muted">
-              Kumora lahir dari pemahaman sederhana: istirahat berkualitas membutuhkan perlengkapan
-              yang benar-benar bekerja untuk tubuh Anda. Kami tidak percaya pada klaim berlebihan —
-              kami fokus pada bahan terbaik, konstruksi yang teliti, dan kenyamanan yang konsisten
-              setiap malam.
-            </p>
-            <p className="mt-4 text-base leading-relaxed text-charcoal-muted">
-              Setiap produk kami uji langsung dalam kehidupan sehari-hari, memastikan setiap serat dan
-              lapisan memberikan kenyamanan yang Anda rasakan sejak pemakaian pertama.
-            </p>
-            <Link to="/about" className="link-arrow mt-8">
-              Kenali Kisah Kami
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <p className="mt-6 text-base leading-relaxed text-charcoal-muted">{data?.paragraph_1 ?? '…'}</p>
+            <p className="mt-4 text-base leading-relaxed text-charcoal-muted">{data?.paragraph_2 ?? '…'}</p>
+            {data && (
+              <Link to={data.link_url} className="link-arrow mt-8">
+                {data.link_text}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
           </div>
           <motion.div
             className="order-1 overflow-hidden rounded-3xl lg:order-2"
@@ -128,7 +118,7 @@ function AboutSection() {
             viewport={{ once: true, amount: viewportAmount }}
           >
             <img
-              src={aboutImg}
+              src={data?.image_url ?? FALLBACK_ABOUT_IMG}
               alt="Kamar tidur minimalis dengan pencahayaan alami yang hangat"
               loading="lazy"
               className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
@@ -141,24 +131,30 @@ function AboutSection() {
 }
 
 function WhySection() {
+  const { data } = useCmsData<{ section: HomeTrustSection; items: TrustItem[] }>(getHomeTrust);
+
   return (
     <section className="bg-ivory py-20 md:py-28">
       <div className="container-wide">
         <SectionHeading
-          eyebrow="Mengapa Kumora"
-          title="Dibuat dengan Kenyamanan sebagai Dasar"
+          eyebrow={data?.section.eyebrow ?? '…'}
+          title={data?.section.title ?? '…'}
           align="center"
         />
         <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-rose/40 bg-rose/40 sm:grid-cols-2 lg:grid-cols-4">
-          {principles.map((p, i) => (
-            <div key={i} className="bg-ivory p-7 md:p-8">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-mauve/15 text-charcoal">
-                <p.icon className="h-5 w-5" strokeWidth={1.5} />
+          {(data?.items ?? []).map((item) => {
+            const Icon = TRUST_ICONS[item.icon_name] ?? HelpCircle;
+            return (
+              <div key={item.id} className="bg-ivory p-7 md:p-8">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-mauve/15 text-charcoal">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <h3 className="mt-5 font-serif text-lg text-charcoal">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-charcoal-muted">{item.description}</p>
               </div>
-              <h3 className="mt-5 font-serif text-lg text-charcoal">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-charcoal-muted">{p.description}</p>
-            </div>
-          ))}
+            );
+          })}
+          {!data && Array.from({ length: 4 }).map((_, i) => <div key={i} className="animate-pulse bg-ivory p-7 md:p-8"><div className="h-11 w-11 rounded-full bg-mist" /><div className="mt-5 h-4 w-2/3 rounded bg-mist" /><div className="mt-2 h-3 w-full rounded bg-mist" /></div>)}
         </div>
       </div>
     </section>
@@ -166,13 +162,14 @@ function WhySection() {
 }
 
 function StatementSection() {
+  const { data } = useCmsData<HomeBanner>(getHomeBanner);
   const viewportAmount = useViewportAmount();
 
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src={statementImg}
+          src={data?.background_image_url ?? FALLBACK_STATEMENT_IMG}
           alt="Kamar tidur diterangi sinar matahari pagi yang hangat"
           loading="lazy"
           className="h-full w-full object-cover"
@@ -188,9 +185,9 @@ function StatementSection() {
           viewport={{ once: true, amount: viewportAmount }}
         >
           <h2 className="font-serif text-display text-ivory text-balance md:text-[3.5rem]">
-            Istirahat Anda Berarti.
+            {data?.title ?? '…'}
           </h2>
-          <p className="mt-5 text-lg text-ivory/80">Karena hari yang lebih baik dimulai dari malam yang lebih nyenyak.</p>
+          <p className="mt-5 text-lg text-ivory/80">{data?.subtitle ?? '…'}</p>
         </motion.div>
       </div>
     </section>
@@ -198,44 +195,41 @@ function StatementSection() {
 }
 
 function FinalCTA() {
+  const { data } = useCmsData<HomeFinalCta>(getHomeFinalCta);
+
   return (
     <section className="bg-mist py-20 md:py-28">
       <div className="container-wide">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-serif text-display text-charcoal text-balance">
-            Siap Menemukan Kenyamanan Anda?
+            {data?.title ?? '…'}
           </h2>
-          <p className="mt-5 text-base text-charcoal-muted">
-            Jelajahi koleksi Kumora atau bicara langsung dengan tim kami untuk menemukan produk yang
-            tepat untuk Anda.
-          </p>
+          <p className="mt-5 text-base text-charcoal-muted">{data?.subtitle ?? '…'}</p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              to="/shop/pillows"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-plum px-7 py-3.5 text-center text-sm font-medium text-ivory transition-colors duration-300 ease-out hover:bg-plum-700 sm:w-auto"
-            >
-              Lihat Produk
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/quiz"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-plum/30 px-7 py-3.5 text-center text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-plum/10 sm:w-auto"
-            >
-              Belum tahu yang cocok? Temukan pilihan Anda
-            </Link>
-            <a
-              href={generateWhatsAppURL({
-                type: 'standard',
-                productName: 'Kumora products',
-                variantLabel: 'general inquiry',
-              })}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-plum/30 px-7 py-3.5 text-center text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-plum/10 sm:w-auto"
-            >
-              <MessageCircle className="h-4 w-4" />
-              Chat melalui WhatsApp
-            </a>
+            {data && (
+              <>
+                <CtaLink
+                  url={data.cta_1_url}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-plum px-7 py-3.5 text-center text-sm font-medium text-ivory transition-colors duration-300 ease-out hover:bg-plum-700 sm:w-auto"
+                >
+                  {data.cta_1_text}
+                  <ArrowRight className="h-4 w-4" />
+                </CtaLink>
+                <CtaLink
+                  url={data.cta_2_url}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-plum/30 px-7 py-3.5 text-center text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-plum/10 sm:w-auto"
+                >
+                  {data.cta_2_text}
+                </CtaLink>
+                <CtaLink
+                  url={data.cta_3_url}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-plum/30 px-7 py-3.5 text-center text-sm font-medium text-plum transition-colors duration-300 ease-out hover:bg-plum/10 sm:w-auto"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  {data.cta_3_text}
+                </CtaLink>
+              </>
+            )}
           </div>
         </div>
       </div>
