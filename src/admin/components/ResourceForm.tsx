@@ -6,7 +6,7 @@ import type { FormFieldConfig } from '../resources/types';
 
 interface Props {
   fields: FormFieldConfig[];
-  values: Record<string, any>;
+  values: Record<string, unknown>;
   errors?: Record<string, string>;
   onChange: (key: string, value: unknown) => void;
 }
@@ -18,7 +18,7 @@ function RepeaterField({
   onChange,
 }: {
   field: FormFieldConfig;
-  rows: Record<string, any>[];
+  rows: Record<string, unknown>[];
   errors?: Record<string, string>;
   onChange: (key: string, value: unknown) => void;
 }) {
@@ -55,7 +55,7 @@ function RepeaterField({
                 </label>
                 {sub.type === 'select' ? (
                   <select
-                    value={row[sub.key] ?? ''}
+                    value={String(row[sub.key] ?? '')}
                     onChange={(e) => updateRow(idx, sub.key, e.target.value)}
                     className="adm-input"
                   >
@@ -69,7 +69,7 @@ function RepeaterField({
                 ) : (
                   <input
                     type={sub.type === 'number' ? 'number' : 'text'}
-                    value={row[sub.key] ?? ''}
+                    value={String(row[sub.key] ?? '')}
                     onChange={(e) =>
                       updateRow(idx, sub.key, sub.type === 'number' ? Number(e.target.value) : e.target.value)
                     }
@@ -118,7 +118,7 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
             <div key={field.key}>
               <RepeaterField
                 field={field}
-                rows={(values[field.key] as Record<string, any>[]) ?? []}
+                rows={(values[field.key] as Record<string, unknown>[]) ?? []}
                 errors={errors}
                 onChange={onChange}
               />
@@ -133,7 +133,7 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
               <textarea
                 rows={3}
                 placeholder={field.placeholder}
-                value={values[field.key] ?? ''}
+                value={String(values[field.key] ?? '')}
                 onChange={(e) => onChange(field.key, e.target.value)}
                 className="adm-input"
               />
@@ -142,7 +142,7 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
               <input
                 type="text"
                 placeholder={field.placeholder}
-                value={values[field.key] ?? ''}
+                value={String(values[field.key] ?? '')}
                 onChange={(e) => onChange(field.key, e.target.value)}
                 className="adm-input"
               />
@@ -153,14 +153,14 @@ export default function ResourceForm({ fields, values, errors, onChange }: Props
                 min={field.min}
                 max={field.max}
                 placeholder={field.placeholder}
-                value={values[field.key] ?? ''}
+                value={String(values[field.key] ?? '')}
                 onChange={(e) => onChange(field.key, e.target.value === '' ? '' : Number(e.target.value))}
                 className="adm-input"
               />
             )}
             {field.type === 'select' && (
               <select
-                value={values[field.key] ?? ''}
+                value={String(values[field.key] ?? '')}
                 onChange={(e) => onChange(field.key, e.target.value)}
                 className="adm-input"
               >

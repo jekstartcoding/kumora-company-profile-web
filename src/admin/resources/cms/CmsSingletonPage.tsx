@@ -1,7 +1,7 @@
 // Fase 6 — halaman generik resource CMS singleton: render SingletonResourceForm
 // sesuai config, dengan uploader gambar ke bucket cms-images.
 import SingletonResourceForm from '../../components/SingletonResourceForm';
-import { uploadCmsImage } from '../../components/CmsImageUploader';
+import { uploadCmsImage } from '../../lib/cmsUpload';
 import { CMS_SINGLETON_CONFIGS } from './config';
 
 interface Props {

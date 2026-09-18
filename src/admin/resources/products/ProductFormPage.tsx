@@ -72,7 +72,7 @@ export default function ProductFormPage() {
   const navigate = useNavigate();
   const isNew = !id;
 
-  const [values, setValues] = useState<Record<string, any>>({
+  const [values, setValues] = useState<Record<string, unknown>>({
     name: '',
     slug: '',
     category: '',
@@ -132,7 +132,7 @@ export default function ProductFormPage() {
   // Auto-generate slug dari name kalau slug masih kosong / belum di-override manual.
   const handleNameChange = (value: string) => {
     setValues((v) => {
-      const autoSlug = isNew || !v.slug || v.slug === slugify(v.name) ? slugify(value) : v.slug;
+      const autoSlug = isNew || !v.slug || v.slug === slugify(String(v.name)) ? slugify(value) : v.slug;
       return { ...v, name: value, slug: autoSlug };
     });
   };
@@ -156,19 +156,19 @@ export default function ProductFormPage() {
   // ---- Validasi mirror backend (7.3) — soft check sebelum submit ----
   const validate = (): boolean => {
     const e: Record<string, string> = {};
-    if (!values.name?.trim()) e.name = 'Name wajib diisi';
+    if (!String(values.name ?? '').trim()) e.name = 'Name wajib diisi';
     if (!values.category) e.category = 'Category wajib dipilih';
     if (values.price === '' || values.price === null || Number(values.price) < 0) e.price = 'Price wajib angka >= 0';
-    if (!values.description?.trim()) e.description = 'Description wajib diisi';
-    if (!values.brand_story_line?.trim()) e.brand_story_line = 'Brand story wajib diisi';
-    if (!values.sensory_descriptor?.trim()) e.sensory_descriptor = 'Sensory descriptor wajib diisi';
+    if (!String(values.description ?? '').trim()) e.description = 'Description wajib diisi';
+    if (!String(values.brand_story_line ?? '').trim()) e.brand_story_line = 'Brand story wajib diisi';
+    if (!String(values.sensory_descriptor ?? '').trim()) e.sensory_descriptor = 'Sensory descriptor wajib diisi';
     const fr = Number(values.firmness_rating);
     if (!Number.isInteger(fr) || fr < 1 || fr > 5) e.firmness_rating = 'Firmness harus 1-5';
-    if (!values.fill_material?.trim()) e.fill_material = 'Fill material wajib diisi';
-    if (!values.fill_weight_equivalent?.trim()) e.fill_weight_equivalent = 'Fill weight wajib diisi';
-    if (!values.delivery_estimate?.trim()) e.delivery_estimate = 'Delivery estimate wajib diisi';
-    if (!values.return_policy_text?.trim()) e.return_policy_text = 'Return policy wajib diisi';
-    if (values.gift_safe === true && !values.gift_safe_note?.trim()) {
+    if (!String(values.fill_material ?? '').trim()) e.fill_material = 'Fill material wajib diisi';
+    if (!String(values.fill_weight_equivalent ?? '').trim()) e.fill_weight_equivalent = 'Fill weight wajib diisi';
+    if (!String(values.delivery_estimate ?? '').trim()) e.delivery_estimate = 'Delivery estimate wajib diisi';
+    if (!String(values.return_policy_text ?? '').trim()) e.return_policy_text = 'Return policy wajib diisi';
+    if (values.gift_safe === true && !String(values.gift_safe_note ?? '').trim()) {
       e.gift_safe_note = 'gift_safe_note wajib diisi kalau gift_safe true';
     }
     if (variants.filter((v) => !v._removed).length === 0) {
@@ -192,7 +192,7 @@ export default function ProductFormPage() {
     if (!validate()) return;
     setBusy(true);
     try {
-      const productPayload: Record<string, any> = {
+      const productPayload: Record<string, unknown> = {
         name: values.name,
         category: values.category,
         price: Number(values.price),
@@ -207,7 +207,8 @@ export default function ProductFormPage() {
         gift_safe: values.gift_safe === true,
       };
       if (values.gift_safe === true) productPayload.gift_safe_note = values.gift_safe_note;
-      if (values.slug?.trim() && values.slug.trim() !== initialSlug) productPayload.slug = values.slug.trim();
+      const slugVal = String(values.slug ?? '').trim();
+      if (slugVal && slugVal !== initialSlug) productPayload.slug = slugVal;
 
       let productId = id!;
 
@@ -280,7 +281,7 @@ export default function ProductFormPage() {
 
         // --- Reviews diff ---
         for (const r of reviews as (AdminReview & { _removed?: boolean })[]) {
-          if ((r as any)._removed) {
+          if ((r as { _removed?: boolean })._removed) {
             if (r.id) await apiSend('delete', `/reviews/${r.id}`);
             continue;
           }
@@ -455,11 +456,11 @@ export default function ProductFormPage() {
 
       <Section title="Reviews">
         <div className="space-y-3">
-          {reviews.filter((r) => !(r as any)._removed).length === 0 && (
+          {reviews.filter((r) => !(r as { _removed?: boolean })._removed).length === 0 && (
             <p className="text-xs text-gray-400">Belum ada review.</p>
           )}
           {reviews.map((r, idx) =>
-            (r as any)._removed ? null : (
+            (r as { _removed?: boolean })._removed ? null : (
               <div key={r.id ?? `new-${idx}`} className="rounded-lg border border-gray-200 bg-gray-50/70 p-4">
                 <div className="flex items-end gap-3">
                   <label className="block flex-1 text-sm">

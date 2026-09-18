@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp, Pencil, Plus, Trash2 } from 'lucide-react';
 import { apiGet, apiSend, apiErrorMessage } from '../../lib/apiClient';
 import { CMS_LIST_CONFIGS } from './config';
-import { uploadCmsImage } from '../../components/CmsImageUploader';
 
 interface Props {
   slug: string;

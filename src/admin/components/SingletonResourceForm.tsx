@@ -6,7 +6,8 @@
 import { useEffect, useState } from 'react';
 import { apiGet, apiSend, apiErrorMessage } from '../lib/apiClient';
 import type { FormFieldConfig } from '../resources/types';
-import { ImageUploader, type CmsUploadFn } from './CmsImageUploader';
+import ImageUploader from './ImageUploader';
+import { type CmsUploadFn } from '../lib/cmsUpload';
 
 interface Props {
   title: string;

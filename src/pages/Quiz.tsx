@@ -85,7 +85,6 @@ export default function QuizPage() {
   const { steps: QUIZ_STEPS, loading, error } = useQuizSteps();
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswer[]>([]);
-  const [matching, setMatching] = useState(false);
   const navigate = useNavigate();
   const step = QUIZ_STEPS[stepIndex];
 
@@ -97,7 +96,6 @@ export default function QuizPage() {
     setAnswers(nextAnswers);
 
     if (stepIndex === QUIZ_STEPS.length - 1) {
-      setMatching(true);
       matchQuizToProduct(nextAnswers)
         .then((matchedProduct) => {
           if (matchedProduct) {
@@ -108,8 +106,7 @@ export default function QuizPage() {
             navigate('/shop/pillows');
           }
         })
-        .catch(() => navigate('/shop/pillows'))
-        .finally(() => setMatching(false));
+        .catch(() => navigate('/shop/pillows'));
       return;
     }
 

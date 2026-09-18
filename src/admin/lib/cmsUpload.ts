@@ -1,7 +1,7 @@
 // Fase 6.4 (plan CMS) — upload gambar CMS langsung ke bucket Supabase
 // `cms-images` (public). Dipakai oleh SingletonResourceForm & form list CMS
 // lewat prop onUploadFile bertipe CmsUploadFn.
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from './supabaseClient';
 
 // Bentuk kompatibel dengan AdminImage (ImageUploader) — order_index/image_type
 // hanya pengganti struktur; CMS menyimpan URL tunggal, bukan deretan gambar.
@@ -37,5 +37,3 @@ export async function uploadCmsImage(file: File, group: string): Promise<CmsUplo
   return { url: data.publicUrl, image_type: group as 'lifestyle' | 'texture', order_index: 0 };
 }
 
-// Re-export komponen generik supaya import di SingletonResourceForm tetap satu pintu.
-export { default as ImageUploader } from './ImageUploader';

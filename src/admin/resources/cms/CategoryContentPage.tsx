@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { apiGet, apiSend, apiErrorMessage } from '../../lib/apiClient';
 import { categoryContent } from './config';
-import { uploadCmsImage } from '../../components/CmsImageUploader';
+import { uploadCmsImage } from '../../lib/cmsUpload';
 
 export default function CategoryContentPage() {
   const [rows, setRows] = useState<Record<string, unknown>[] | null>(null);
