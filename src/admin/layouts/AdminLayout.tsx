@@ -3,8 +3,8 @@
 // Restrukturisasi: dirender di dalam app frontend (path /admin/*), tanpa Router sendiri.
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Boxes, ChevronRight, CircleHelp, HelpCircle, Home, Info, ListTree, LogOut, Menu, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react';
-import { supabase } from '../lib/supabaseClient';
+import { Boxes, ChevronRight, HelpCircle, Home, Info, ListTree, LogOut, Menu, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 import { CMS_NAV } from '../resources/cms/config';
 
 const NAV_ITEMS = [

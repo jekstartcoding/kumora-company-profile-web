@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import type { ReactNode } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
   const [checking, setChecking] = useState(true);

@@ -4,7 +4,7 @@
 // tetap di-attach ke setiap request.
 // Kalau 401, sesi dianggap habis → kembalikan ke halaman login.
 import axios from 'axios';
-import { supabase } from './supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 
 const backendBaseUrl = (import.meta.env.VITE_ADMIN_API_URL as string | undefined)?.replace(/\/+$/, '') ?? '';
 
