@@ -3,7 +3,7 @@
 // Restrukturisasi: dirender di dalam app frontend (path /admin/*), tanpa Router sendiri.
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Boxes, ChevronDown, FileText, HelpCircle, ListTree, LogOut, Menu, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react';
+import { Boxes, ChevronRight, CircleHelp, HelpCircle, Home, Info, ListTree, LogOut, Menu, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { CMS_NAV } from '../resources/cms/config';
 
@@ -25,11 +25,6 @@ export default function AdminLayout() {
       return false;
     }
   });
-  // Fase 5 (plan CMS): grup CMS Konten collapsible dengan sub-grup Homepage/About.
-  const [cmsOpen, setCmsOpen] = useState(true);
-  const [homeOpen, setHomeOpen] = useState(true);
-  const [aboutOpen, setAboutOpen] = useState(true);
-
   const toggleCollapsed = () => {
     setCollapsed((prev) => {
       try {
@@ -92,50 +87,33 @@ export default function AdminLayout() {
 
         {!collapsed && (
           <>
-            <p className="adm-sidebar-section">CMS Konten</p>
-            <button
-              type="button"
-              onClick={() => setCmsOpen((v) => !v)}
-              className="adm-nav-item w-full justify-between"
-            >
-              <span className="flex items-center gap-3">
-                <FileText className="h-4 w-4 shrink-0" />
-                CMS Konten
-              </span>
-              <ChevronDown className={`h-4 w-4 transition-transform ${cmsOpen ? '' : '-rotate-90'}`} />
-            </button>
-            {cmsOpen && (
-              <div className="ml-4 border-l border-white/10 pl-2">
-                {([
-                  { key: 'home', group: CMS_NAV.homepage, open: homeOpen, setOpen: setHomeOpen },
-                  { key: 'about', group: CMS_NAV.about, open: aboutOpen, setOpen: setAboutOpen },
-                ] as const).map(({ key, group, open, setOpen }) => (
-                  <div key={key}>
-                    <button
-                      type="button"
-                      onClick={() => setOpen(!open)}
-                      className="adm-nav-item w-full justify-between text-xs text-gray-400"
-                    >
-                      <span>{group.label}</span>
-                      <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? '' : '-rotate-90'}`} />
-                    </button>
-                    {open &&
-                      group.items.map((item) => (
-                        <NavLink
-                          key={item.slug}
-                          to={`/admin/cms/${item.slug}`}
-                          onClick={() => setMobileOpen(false)}
-                          className={({ isActive }) =>
-                            `adm-nav-item text-xs ${isActive ? 'adm-nav-item-active' : ''}`
-                          }
-                        >
-                          {item.label}
-                        </NavLink>
-                      ))}
-                  </div>
+            {/* CMS: langsung 2 grup halaman dengan ikon — tanpa header grup foldable */}
+            {([
+              { group: CMS_NAV.homepage, icon: Home, label: 'Home Page' },
+              { group: CMS_NAV.about, icon: Info, label: 'About Page' },
+            ] as const).map(({ group, icon: GroupIcon, label }) => (
+              <div key={label}>
+                <div className="adm-nav-item pointer-events-none font-semibold text-white">
+                  <GroupIcon className="h-4 w-4 shrink-0" />
+                  {label}
+                </div>
+                {group.items.map((item) => (
+                  <NavLink
+                    key={item.slug}
+                    to={`/admin/cms/${item.slug}`}
+                    onClick={() => setMobileOpen(false)}
+                    className={({ isActive }) =>
+                      `adm-nav-item ml-4 border-l border-white/10 pl-3 text-xs ${
+                        isActive ? 'adm-nav-item-active' : ''
+                      }`
+                    }
+                  >
+                    <ChevronRight className="h-3 w-3 shrink-0 text-gray-500" />
+                    {item.label}
+                  </NavLink>
                 ))}
               </div>
-            )}
+            ))}
           </>
         )}
       </nav>
