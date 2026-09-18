@@ -51,6 +51,10 @@ export interface Product {
   category: ProductCategory;
   tags?: ("cover" | "sheet")[];
   price: number;
+  // Diskon — dua jenis, hanya boleh salah satu aktif (di-guard DB + backend):
+  // discountPercentage 0–100 (%), discountAmount nominal IDR (>= 0). 0/0 = tanpa diskon.
+  discountPercentage: number;
+  discountAmount: number;
   shortDescription: string;
   description: string;
   images: string[];

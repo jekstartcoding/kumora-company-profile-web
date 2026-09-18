@@ -22,6 +22,8 @@ export interface ProductRow {
   category: 'pillows' | 'bolsters' | 'beds';
   tags: string[];
   price: number;
+  discount_percentage: number;
+  discount_amount: number;
   sensory_descriptor: string;
   firmness_rating: number;
   fill_material: string;

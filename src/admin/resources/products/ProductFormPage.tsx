@@ -35,6 +35,24 @@ const BASIC_FIELDS = [
   { key: 'brand_story_line', label: 'Brand Story Line', type: 'textarea' as const, required: true },
 ];
 
+const DISCOUNT_FIELDS = [
+  {
+    key: 'discount_percentage',
+    label: 'Discount Percentage (0-100)',
+    type: 'number' as const,
+    min: 0,
+    max: 100,
+    helpText: 'Isi SALAH SATU saja: persen ATAU nominal. 0 = tanpa diskon.',
+  },
+  {
+    key: 'discount_amount',
+    label: 'Discount Amount (IDR)',
+    type: 'number' as const,
+    min: 0,
+    helpText: 'Potongan nominal, tidak boleh melebihi Price. 0 = tanpa diskon.',
+  },
+];
+
 const SENSORY_FIELDS = [
   { key: 'sensory_descriptor', label: 'Sensory Descriptor', type: 'text' as const, required: true },
   { key: 'firmness_rating', label: 'Firmness (1-5)', type: 'number' as const, required: true, min: 1, max: 5 },
@@ -77,6 +95,8 @@ export default function ProductFormPage() {
     slug: '',
     category: '',
     price: '',
+    discount_percentage: 0,
+    discount_amount: 0,
     description: '',
     brand_story_line: '',
     sensory_descriptor: '',
@@ -105,6 +125,8 @@ export default function ProductFormPage() {
         slug: p.slug,
         category: p.category,
         price: p.price,
+        discount_percentage: Number(p.discount_percentage ?? 0),
+        discount_amount: Number(p.discount_amount ?? 0),
         description: p.description,
         brand_story_line: p.brand_story_line,
         sensory_descriptor: p.sensory_descriptor,
@@ -171,6 +193,22 @@ export default function ProductFormPage() {
     if (values.gift_safe === true && !String(values.gift_safe_note ?? '').trim()) {
       e.gift_safe_note = 'gift_safe_note wajib diisi kalau gift_safe true';
     }
+    // Diskon: mirror validasi backend (0008).
+    const pct = Number(values.discount_percentage ?? 0);
+    const amt = Number(values.discount_amount ?? 0);
+    if (!Number.isFinite(pct) || pct < 0 || pct > 100) {
+      e.discount_percentage = 'Discount percentage harus angka 0-100';
+    }
+    if (!Number.isFinite(amt) || amt < 0) {
+      e.discount_amount = 'Discount amount harus angka >= 0';
+    }
+    if (pct > 0 && amt > 0) {
+      e.discount_percentage = 'Isi salah satu saja: persen ATAU nominal';
+      e.discount_amount = 'Isi salah satu saja: persen ATAU nominal';
+    }
+    if (amt > 0 && Number(values.price) > 0 && amt > Number(values.price)) {
+      e.discount_amount = 'Discount amount tidak boleh lebih besar dari Price';
+    }
     if (variants.filter((v) => !v._removed).length === 0) {
       e.variants = 'Minimal 1 variant';
     }
@@ -196,6 +234,8 @@ export default function ProductFormPage() {
         name: values.name,
         category: values.category,
         price: Number(values.price),
+        discount_percentage: Number(values.discount_percentage ?? 0),
+        discount_amount: Number(values.discount_amount ?? 0),
         description: values.description,
         brand_story_line: values.brand_story_line,
         sensory_descriptor: values.sensory_descriptor,
@@ -341,6 +381,10 @@ export default function ProductFormPage() {
 
       <Section title="Sensory Spec">
         <ResourceForm fields={SENSORY_FIELDS} values={values} errors={errors} onChange={setField} />
+      </Section>
+
+      <Section title="Discount">
+        <ResourceForm fields={DISCOUNT_FIELDS} values={values} errors={errors} onChange={setField} />
       </Section>
 
       <Section title="Logistics">

@@ -13,6 +13,8 @@ import {
   getRelatedProducts,
   type Product,
 } from '@/data/products';
+import { computeDiscount } from '@/lib/productApi';
+import DiscountPrice from '@/components/DiscountPrice';
 import type { ProductVariant } from '@/data/types';
 import { entryDecelerateVariants } from '@/lib/animations';
 
@@ -359,9 +361,22 @@ export default function ProductDetailPage() {
               <div className="mt-4">
                 <Rating rating={product.rating} reviewCount={product.reviewCount} size="md" />
               </div>
-              <p className="mt-6 text-2xl font-medium text-plum md:text-3xl">
-                {formatIDR(selectedVariant.price)}
-              </p>
+              {(() => {
+                const discount = computeDiscount(
+                  selectedVariant.price,
+                  product.discountPercentage,
+                  product.discountAmount
+                );
+                return discount.active ? (
+                  <div className="mt-6">
+                    <DiscountPrice discount={discount} size="lg" />
+                  </div>
+                ) : (
+                  <p className="mt-6 text-2xl font-medium text-plum md:text-3xl">
+                    {formatIDR(selectedVariant.price)}
+                  </p>
+                );
+              })()}
               <p className="mt-5 text-base leading-relaxed text-charcoal-muted">{product.description}</p>
 
               <DeliveryEstimateBadge estimate={product.deliveryEstimate} />
@@ -390,7 +405,25 @@ export default function ProductDetailPage() {
                         />
                         {variant.label}
                       </span>
-                      <span className="font-medium">{formatIDR(variant.price)}</span>
+                      <span className="flex items-center gap-2">
+                        {(() => {
+                          const d = computeDiscount(
+                            variant.price,
+                            product.discountPercentage,
+                            product.discountAmount
+                          );
+                          return d.active ? (
+                            <>
+                              <span className="text-xs text-charcoal-muted line-through">
+                                {formatIDR(d.originalPrice)}
+                              </span>
+                              <span className="font-medium text-plum">{formatIDR(d.finalPrice)}</span>
+                            </>
+                          ) : (
+                            <span className="font-medium">{formatIDR(variant.price)}</span>
+                          );
+                        })()}
+                      </span>
                     </label>
                   ))}
                 </div>

@@ -6,6 +6,8 @@ import { useReducedMotion } from '@/hooks/useMotionPreference';
 import type { Product } from '@/data/types';
 import { formatIDR, generateWhatsAppURL } from '@/data/content';
 import { revealVariants } from '@/lib/animations';
+import { computeDiscount } from '@/lib/productApi';
+import DiscountPrice from '@/components/DiscountPrice';
 
 interface ProductCardProps {
   product: Product;
@@ -63,7 +65,18 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.shortDescription}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-1">
-          <span className="text-base font-medium text-plum">{formatIDR(product.price)}</span>
+          {(() => {
+            const discount = computeDiscount(
+              product.price,
+              product.discountPercentage,
+              product.discountAmount
+            );
+            return discount.active ? (
+              <DiscountPrice discount={discount} size="sm" />
+            ) : (
+              <span className="text-base font-medium text-plum">{formatIDR(product.price)}</span>
+            );
+          })()}
           <div className="flex items-center gap-3">
             <Link to={`/product/${product.slug}`} className="link-arrow text-xs">
               Lihat Produk

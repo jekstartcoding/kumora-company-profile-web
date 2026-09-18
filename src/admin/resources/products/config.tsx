@@ -32,6 +32,18 @@ export const productResource: ResourceConfig<ProductRow> = {
           Number(row.price)
         ),
     },
+    {
+      key: 'discount_percentage',
+      label: 'Discount',
+      render: (row) => {
+        const pct = Number(row.discount_percentage ?? 0);
+        const amt = Number(row.discount_amount ?? 0);
+        if (pct > 0) return `-${Math.round(pct)}%`;
+        if (amt > 0)
+          return `-${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amt)}`;
+        return '—';
+      },
+    },
     { key: 'variant_count', label: 'Variants' },
   ],
   formFields: [],
